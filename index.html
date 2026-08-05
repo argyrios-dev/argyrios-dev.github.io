@@ -510,14 +510,10 @@
     const CONFIG = Object.freeze({
       username: "argyrios-dev",
       excludedRepository: "argyrios-dev.github.io",
-      apiBase: "https://api.github.com",
-      pageSize: 100,
-      maximumPages: 10,
+      projectsDataURL: "./projects.json",
       initialCards: 9,
       cardsPerLoad: 9,
-      repositoryCacheKey: "argyrios-dev:repositories:v1",
-      previewCacheKey: "argyrios-dev:readme-previews:v1",
-      repositoryCacheDuration: 30 * 60 * 1000,
+      previewCacheKey: "argyrios-dev:readme-previews:v2",
       previewCacheDuration: 24 * 60 * 60 * 1000,
       previewConcurrency: 4
     });
@@ -757,64 +753,33 @@
       );
     }
 
-    async function fetchRepositoryPage(page) {
-      const parameters = new URLSearchParams({
-        type: "owner",
-        sort: "updated",
-        direction: "desc",
-        per_page: String(CONFIG.pageSize),
-        page: String(page)
-      });
-
+    async function fetchGeneratedProjects() {
       const response = await fetch(
-        `${CONFIG.apiBase}/users/${encodeURIComponent(CONFIG.username)}/repos?${parameters}`,
+        `${CONFIG.projectsDataURL}?v=${Date.now()}`,
         {
+          cache: "no-store",
           headers: {
-            Accept: "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28"
+            Accept: "application/json"
           }
         }
       );
 
       if (!response.ok) {
-        const error = new Error(
-          `GitHub API request failed with status ${response.status}.`
+        throw new Error(
+          `projects.json request failed with status ${response.status}.`
         );
-
-        error.status = response.status;
-        error.rateLimitRemaining = response.headers.get(
-          "x-ratelimit-remaining"
-        );
-
-        throw error;
       }
 
-      const repositories = await response.json();
+      const payload = await response.json();
 
-      if (!Array.isArray(repositories)) {
-        throw new Error("GitHub returned an unexpected repository response.");
+      if (
+        !payload ||
+        !Array.isArray(payload.repositories)
+      ) {
+        throw new Error("projects.json has an invalid format.");
       }
 
-      return repositories;
-    }
-
-    async function fetchAllRepositories() {
-      const repositories = [];
-
-      for (let page = 1; page <= CONFIG.maximumPages; page += 1) {
-        const batch = await fetchRepositoryPage(page);
-        repositories.push(...batch);
-
-        if (batch.length < CONFIG.pageSize) {
-          break;
-        }
-      }
-
-      return repositories.filter((repository) => (
-        repository &&
-        repository.private === false &&
-        repository.name !== CONFIG.excludedRepository
-      ));
+      return payload;
     }
 
     function extractFirstReadmeImage(markdown) {
@@ -972,21 +937,9 @@
         return cached;
       }
 
-      const readme = await fetchReadmeText(repository);
-      let previewURL = null;
-
-      if (readme) {
-        const imageSource = extractFirstReadmeImage(readme.text);
-
-        previewURL = normalizeGitHubImageURL(
-          imageSource,
-          readme.url,
-          repository
-        );
-      }
-
       const finalURL =
-        previewURL || fallbackPreviewDataURL(repository);
+        repository.preview_url ||
+        fallbackPreviewDataURL(repository);
 
       state.previewMemoryCache.set(repository.name, finalURL);
       savePreviewCache();
@@ -1330,23 +1283,13 @@
 
       title.className = "text-lg font-bold text-white";
 
-      const rateLimited =
-        error &&
-        (
-          error.status === 403 ||
-          error.rateLimitRemaining === "0"
-        );
-
-      title.textContent = rateLimited
-        ? "GitHub API limit reached."
-        : "Projects could not be loaded.";
+      title.textContent = "Projects could not be loaded.";
 
       message.className =
         "mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500";
 
-      message.textContent = rateLimited
-        ? "GitHub limits anonymous API requests by IP address. The page will work again after the limit resets."
-        : "GitHub may be temporarily unavailable. You can still open the complete repository list.";
+      message.textContent =
+        "The generated projects.json file is missing or invalid. Run the Update Portfolio Data workflow once.";
 
       link.className = "secondary-button mt-6";
       link.href =
@@ -1403,31 +1346,26 @@
       installEventListeners();
       loadPreviewCache();
 
-      const cachedRepositories = readJSONCache(
-        CONFIG.repositoryCacheKey,
-        CONFIG.repositoryCacheDuration
-      );
-
-      if (Array.isArray(cachedRepositories)) {
-        useRepositories(cachedRepositories);
-      }
-
       try {
-        const repositories = await fetchAllRepositories();
+        const payload = await fetchGeneratedProjects();
+        useRepositories(payload.repositories);
 
-        writeJSONCache(
-          CONFIG.repositoryCacheKey,
-          repositories
-        );
+        if (payload.generated_at) {
+          const generatedDate = new Date(payload.generated_at);
 
-        useRepositories(repositories);
-      } catch (error) {
-        if (!Array.isArray(cachedRepositories)) {
-          renderLoadError(error);
+          if (!Number.isNaN(generatedDate.getTime())) {
+            elements.refreshDate.textContent =
+              new Intl.DateTimeFormat("en", {
+                month: "short",
+                day: "numeric"
+              }).format(generatedDate);
+          }
         }
+      } catch (error) {
+        renderLoadError(error);
 
         console.error(
-          "Unable to refresh GitHub repository data:",
+          "Unable to load generated project data:",
           error
         );
       }
