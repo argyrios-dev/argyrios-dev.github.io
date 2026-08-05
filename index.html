@@ -1,292 +1,1439 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth bg-slate-950">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07080c">
-  <meta name="description" content="Open-source macOS apps and privacy-first software by argyrios-dev.">
+  <meta name="theme-color" content="#020617">
+  <meta
+    name="description"
+    content="A fully automated portfolio of public GitHub projects by argyrios-dev."
+  >
   <meta property="og:title" content="argyrios-dev — Projects">
-  <meta property="og:description" content="A living collection of open-source projects by argyrios-dev.">
+  <meta
+    property="og:description"
+    content="Native apps, open-source tools and privacy-first software by argyrios-dev."
+  >
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://opengraph.githubassets.com/1/argyrios-dev">
-  <title>argyrios-dev — Projects</title>
-  <link rel="preconnect" href="https://api.github.com">
-  <link rel="preconnect" href="https://opengraph.githubassets.com">
-  <link rel="icon" href="https://github.com/argyrios-dev.png" type="image/png">
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
-</head>
-<body>
-  <div class="ambient ambient-one" aria-hidden="true"></div>
-  <div class="ambient ambient-two" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
+  <meta property="og:image" content="https://opengraph.githubassets.com/portfolio/argyrios-dev">
+  <title>argyrios-dev — Automated Project Portfolio</title>
 
-  <nav class="navigation">
-    <div class="container navigation-inner">
-      <a class="identity" href="#top" aria-label="Go to the top">
+  <link rel="preconnect" href="https://api.github.com">
+  <link rel="preconnect" href="https://raw.githubusercontent.com">
+  <link rel="preconnect" href="https://opengraph.githubassets.com">
+  <link rel="icon" type="image/png" href="https://github.com/argyrios-dev.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --font-sans:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
+    }
+
+    @layer base {
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        @apply min-h-screen overflow-x-hidden bg-slate-950 text-slate-100 antialiased;
+      }
+
+      ::selection {
+        @apply bg-cyan-300 text-slate-950;
+      }
+
+      button,
+      a,
+      input,
+      select {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :focus-visible {
+        @apply outline-2 outline-offset-4 outline-cyan-300;
+      }
+    }
+
+    @layer components {
+      .glass-panel {
+        @apply border border-white/10 bg-slate-900/55 shadow-2xl shadow-black/30 backdrop-blur-xl;
+      }
+
+      .neon-border {
+        position: relative;
+      }
+
+      .neon-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        z-index: -1;
+        border-radius: inherit;
+        background:
+          linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.65),
+            rgba(34, 211, 238, 0.55),
+            rgba(16, 185, 129, 0.45)
+          );
+        opacity: 0;
+        filter: blur(8px);
+        transition: opacity 250ms ease;
+      }
+
+      .neon-border:hover::before {
+        opacity: 0.85;
+      }
+
+      .project-card {
+        @apply glass-panel neon-border group relative isolate overflow-hidden rounded-3xl transition duration-300 ease-out;
+      }
+
+      .project-card:hover {
+        @apply -translate-y-2 scale-[1.015] border-cyan-300/35 shadow-cyan-950/40;
+      }
+
+      .primary-button {
+        @apply inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-violet-500 via-cyan-400 to-emerald-400 px-6 font-bold text-slate-950 shadow-lg shadow-cyan-950/40 transition duration-200 hover:-translate-y-0.5 hover:brightness-110;
+      }
+
+      .secondary-button {
+        @apply inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-white/10;
+      }
+
+      .tag {
+        @apply inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-semibold text-slate-300;
+      }
+
+      .skeleton {
+        @apply animate-pulse rounded-3xl border border-white/8 bg-slate-900/65;
+      }
+
+      .stat-card {
+        @apply border-r border-white/10 px-5 py-5 text-center last:border-r-0;
+      }
+
+      .filter-button {
+        @apply rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white;
+      }
+
+      .filter-button[aria-pressed="true"] {
+        @apply border-cyan-300/50 bg-cyan-300/15 text-cyan-100;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <style>
+    .noise-layer {
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.78'/%3E%3C/svg%3E");
+    }
+
+    .project-preview {
+      transition: transform 550ms cubic-bezier(.2, .75, .25, 1);
+    }
+
+    .project-card:hover .project-preview {
+      transform: scale(1.045);
+    }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .line-clamp-3 {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="pointer-events-none fixed inset-0 -z-30 bg-slate-950"></div>
+  <div
+    class="pointer-events-none fixed left-[-18rem] top-[-12rem] -z-20 h-[44rem] w-[44rem] rounded-full bg-violet-600/20 blur-[130px]"
+  ></div>
+  <div
+    class="pointer-events-none fixed right-[-20rem] top-[14rem] -z-20 h-[46rem] w-[46rem] rounded-full bg-cyan-500/15 blur-[140px]"
+  ></div>
+  <div
+    class="pointer-events-none fixed bottom-[-25rem] left-[30%] -z-20 h-[45rem] w-[45rem] rounded-full bg-emerald-500/10 blur-[150px]"
+  ></div>
+  <div class="noise-layer pointer-events-none fixed inset-0 z-50 opacity-[0.018]"></div>
+
+  <nav
+    class="sticky top-0 z-40 border-b border-white/8 bg-slate-950/70 backdrop-blur-2xl"
+    aria-label="Main navigation"
+  >
+    <div class="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+      <a href="#top" class="flex min-w-0 items-center gap-3" aria-label="Go to the top">
         <img
-          class="avatar"
           src="https://github.com/argyrios-dev.png"
-          alt="argyrios-dev avatar"
-          width="42"
-          height="42"
+          alt=""
+          class="h-10 w-10 rounded-full border border-white/15 bg-slate-900 object-cover shadow-lg shadow-black/40"
+          width="40"
+          height="40"
         >
-        <span class="identity-text">
-          <strong>argyrios-dev</strong>
-          <small>Independent developer</small>
+        <span class="min-w-0">
+          <strong class="block truncate text-sm font-bold tracking-tight text-white">
+            argyrios-dev
+          </strong>
+          <span class="block truncate text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+            Independent developer
+          </span>
         </span>
       </a>
 
-      <div class="navigation-links">
-        <a href="#projects">Projects</a>
-        <a href="#principles">Principles</a>
+      <div class="flex items-center gap-5 text-sm font-semibold text-slate-400">
+        <a href="#projects" class="hidden transition hover:text-white sm:inline">Projects</a>
+        <a href="#about" class="hidden transition hover:text-white sm:inline">About</a>
         <a
-          class="navigation-button"
           href="https://github.com/argyrios-dev"
           target="_blank"
           rel="noreferrer"
+          class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white transition hover:border-cyan-300/40 hover:bg-white/10"
         >GitHub ↗</a>
       </div>
     </div>
   </nav>
 
-  <header id="top" class="hero container">
-    <div class="eyebrow">
-      <span class="eyebrow-dot"></span>
-      Native software · Open source
+  <header id="top" class="mx-auto max-w-7xl px-4 pb-20 pt-24 text-center sm:px-6 sm:pt-32 lg:px-8">
+    <div
+      class="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/8 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-cyan-100"
+    >
+      <span class="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,.95)]"></span>
+      Live from GitHub
     </div>
 
-    <h1>
-      <span class="gradient-text">Small apps.<br>Clear purpose.</span>
+    <h1
+      class="mx-auto max-w-5xl bg-gradient-to-r from-violet-300 via-cyan-200 to-emerald-300 bg-clip-text text-6xl font-black leading-[0.92] tracking-[-0.065em] text-transparent sm:text-8xl lg:text-[8.2rem]"
+    >
+      Projects that<br>update themselves.
     </h1>
 
-    <p class="hero-copy">
-      A self-updating collection of public projects by
-      <strong>argyrios-dev</strong>, focused on native macOS experiences,
-      privacy and thoughtful utility.
+    <p class="mx-auto mt-8 max-w-3xl text-lg leading-8 text-slate-400 sm:text-xl">
+      A fully automated collection of public repositories by
+      <strong class="font-semibold text-slate-200">argyrios-dev</strong>.
+      Create a new public repository and it appears here automatically.
     </p>
 
-    <div class="hero-actions">
-      <a class="button button-primary" href="#projects">Explore projects ↓</a>
+    <div class="mt-10 flex flex-wrap justify-center gap-3">
+      <a href="#projects" class="primary-button">Explore projects ↓</a>
       <a
-        class="button button-secondary"
         href="https://github.com/argyrios-dev?tab=repositories"
         target="_blank"
         rel="noreferrer"
-      >All repositories ↗</a>
+        class="secondary-button"
+      >View all repositories ↗</a>
     </div>
 
-    <div class="live-note">
-      <span class="live-dot"></span>
-      Every new public repository appears automatically.
-    </div>
-
-    <div class="stats" aria-label="GitHub statistics">
-      <div class="stat">
-        <strong id="repositoryCount">—</strong>
-        <span>Public projects</span>
+    <div class="glass-panel mx-auto mt-16 grid max-w-4xl grid-cols-2 overflow-hidden rounded-3xl sm:grid-cols-4">
+      <div class="stat-card border-b border-white/10 sm:border-b-0">
+        <strong id="repositoryCount" class="block text-2xl font-black tracking-tight text-white">—</strong>
+        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+          Public projects
+        </span>
       </div>
-      <div class="stat">
-        <strong id="pagesCount">—</strong>
-        <span>Project websites</span>
+      <div class="stat-card border-b border-r-0 border-white/10 sm:border-b-0 sm:border-r">
+        <strong id="websiteCount" class="block text-2xl font-black tracking-tight text-white">—</strong>
+        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+          Live websites
+        </span>
       </div>
-      <div class="stat">
-        <strong id="totalStars">—</strong>
-        <span>Total stars</span>
+      <div class="stat-card">
+        <strong id="starCount" class="block text-2xl font-black tracking-tight text-white">—</strong>
+        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+          Total stars
+        </span>
       </div>
-      <div class="stat">
-        <strong id="lastRefresh">Live</strong>
-        <span>Project index</span>
+      <div class="stat-card border-r-0">
+        <strong id="refreshDate" class="block text-2xl font-black tracking-tight text-white">Live</strong>
+        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+          Portfolio index
+        </span>
       </div>
     </div>
   </header>
 
   <main>
-    <section id="projects" class="projects-section container">
-      <div class="section-heading">
+    <section id="projects" class="mx-auto max-w-7xl scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <div class="section-label">Published work</div>
-          <h2>Everything public.<br>Always current.</h2>
-          <p>
-            This page reads GitHub directly. No project card is maintained by
-            hand, so new public repositories appear automatically.
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">
+            Published work
+          </p>
+          <h2 class="mt-4 text-4xl font-black tracking-[-0.045em] text-white sm:text-6xl">
+            Everything public.<br>Always current.
+          </h2>
+          <p class="mt-5 max-w-2xl text-base leading-7 text-slate-400">
+            Repository metadata and preview images are discovered directly from GitHub.
+            No project card is maintained by hand.
           </p>
         </div>
 
-        <div class="controls">
-          <label class="search-control">
-            <span class="visually-hidden">Search repositories</span>
-            <input
-              id="searchInput"
-              type="search"
-              placeholder="Search projects"
-              autocomplete="off"
-            >
-            <span aria-hidden="true">⌕</span>
-          </label>
-
-          <label class="select-control">
-            <span class="visually-hidden">Filter projects</span>
-            <select id="projectFilter">
-              <option value="all">All projects</option>
-              <option value="website">With website</option>
-              <option value="source">Source only</option>
-              <option value="swift">Swift</option>
-              <option value="recent">Recently updated</option>
-            </select>
-          </label>
-
-          <label class="select-control">
-            <span class="visually-hidden">Sort projects</span>
-            <select id="projectSort">
-              <option value="updated">Recently updated</option>
-              <option value="created">Recently created</option>
-              <option value="stars">Most starred</option>
-              <option value="name">Name</option>
-            </select>
-          </label>
-        </div>
+        <label class="relative block w-full lg:max-w-sm">
+          <span class="sr-only">Search projects</span>
+          <input
+            id="searchInput"
+            type="search"
+            autocomplete="off"
+            placeholder="Search repositories..."
+            class="h-13 w-full rounded-2xl border border-white/10 bg-slate-900/70 pl-5 pr-12 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300/50 focus:ring-4 focus:ring-cyan-300/10"
+          >
+          <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">
+            ⌕
+          </span>
+        </label>
       </div>
 
-      <div id="activeFilters" class="active-filters" hidden></div>
+      <div class="mt-8 flex flex-wrap gap-2" aria-label="Project filters">
+        <button type="button" class="filter-button" data-filter="all" aria-pressed="true">
+          All
+        </button>
+        <button type="button" class="filter-button" data-filter="website" aria-pressed="false">
+          With website
+        </button>
+        <button type="button" class="filter-button" data-filter="swift" aria-pressed="false">
+          Swift
+        </button>
+        <button type="button" class="filter-button" data-filter="recent" aria-pressed="false">
+          Recently updated
+        </button>
 
-      <div id="projectsGrid" class="projects-grid" aria-live="polite">
-        <div class="state-card">
-          <div class="spinner" aria-hidden="true"></div>
-          <strong>Loading public projects…</strong>
-          <span>Reading repositories from GitHub.</span>
-        </div>
+        <label class="ml-auto hidden sm:block">
+          <span class="sr-only">Sort repositories</span>
+          <select
+            id="sortSelect"
+            class="rounded-full border border-white/10 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-300 outline-none transition focus:border-cyan-300/50"
+          >
+            <option value="updated">Recently updated</option>
+            <option value="created">Recently created</option>
+            <option value="stars">Most starred</option>
+            <option value="name">Name</option>
+          </select>
+        </label>
       </div>
 
-      <div id="loadMoreWrap" class="load-more-wrap" hidden>
-        <button id="loadMoreButton" class="button button-secondary" type="button">
+      <p id="resultsSummary" class="mt-5 text-sm text-slate-500" hidden></p>
+
+      <div
+        id="projectsGrid"
+        class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
+        aria-live="polite"
+      >
+        <div class="skeleton h-[31rem]"></div>
+        <div class="skeleton hidden h-[31rem] md:block"></div>
+        <div class="skeleton hidden h-[31rem] xl:block"></div>
+        <div class="skeleton h-[31rem]"></div>
+        <div class="skeleton hidden h-[31rem] md:block"></div>
+        <div class="skeleton hidden h-[31rem] xl:block"></div>
+      </div>
+
+      <div id="loadMoreContainer" class="mt-10 text-center" hidden>
+        <button id="loadMoreButton" type="button" class="secondary-button">
           Show more projects
         </button>
       </div>
     </section>
 
-    <section id="principles" class="principles container">
-      <div class="principles-copy">
-        <div class="section-label">How I build</div>
-        <h2>Native, focused<br>and respectful.</h2>
-        <p>
-          Software should feel at home on the platform, solve a real problem
-          and collect no more information than it genuinely needs.
-        </p>
-      </div>
-
-      <div class="principles-list">
-        <article>
-          <span>01</span>
+    <section id="about" class="mx-auto max-w-7xl scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8">
+      <div class="glass-panel overflow-hidden rounded-[2rem] p-8 sm:p-12 lg:p-16">
+        <div class="grid items-end gap-12 lg:grid-cols-[1.05fr_.95fr]">
           <div>
-            <h3>Native first</h3>
-            <p>Built for the platform instead of merely running on it.</p>
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-emerald-300">
+              How I build
+            </p>
+            <h2 class="mt-4 text-4xl font-black tracking-[-0.045em] text-white sm:text-6xl">
+              Native, focused<br>and respectful.
+            </h2>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400">
+              Software should solve a real problem, feel at home on its platform
+              and collect no more data than it genuinely needs.
+            </p>
           </div>
-        </article>
 
-        <article>
-          <span>02</span>
-          <div>
-            <h3>Privacy by architecture</h3>
-            <p>Local processing and minimal data collection whenever possible.</p>
+          <div class="space-y-3">
+            <article class="rounded-2xl border border-white/10 bg-black/20 p-5">
+              <p class="text-xs font-black uppercase tracking-[0.16em] text-violet-300">01</p>
+              <h3 class="mt-2 text-lg font-bold text-white">Native first</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-400">
+                Built for the platform instead of merely running on it.
+              </p>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-black/20 p-5">
+              <p class="text-xs font-black uppercase tracking-[0.16em] text-cyan-300">02</p>
+              <h3 class="mt-2 text-lg font-bold text-white">Privacy by architecture</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-400">
+                Local processing and minimal data collection whenever possible.
+              </p>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-black/20 p-5">
+              <p class="text-xs font-black uppercase tracking-[0.16em] text-emerald-300">03</p>
+              <h3 class="mt-2 text-lg font-bold text-white">Open source</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-400">
+                Readable code, transparent behavior and public issue tracking.
+              </p>
+            </article>
           </div>
-        </article>
-
-        <article>
-          <span>03</span>
-          <div>
-            <h3>Open source</h3>
-            <p>Readable code, transparent behavior and public issue tracking.</p>
-          </div>
-        </article>
+        </div>
       </div>
     </section>
 
-    <section class="closing container">
-      <div class="section-label">Living portfolio</div>
-      <h2>Build it once.<br>Let GitHub keep it current.</h2>
-      <p>
-        Create a public repository under <strong>argyrios-dev</strong> and it
-        will become visible here automatically.
-      </p>
-      <div class="hero-actions">
-        <a
-          class="button button-primary"
-          href="https://github.com/new"
-          target="_blank"
-          rel="noreferrer"
-        >Create a repository ↗</a>
-        <a
-          class="button button-secondary"
-          href="https://github.com/argyrios-dev"
-          target="_blank"
-          rel="noreferrer"
-        >View profile ↗</a>
+    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <div
+        class="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-violet-500/15 via-cyan-500/8 to-emerald-500/10 px-6 py-20 text-center shadow-2xl shadow-black/30 sm:px-12"
+      >
+        <p class="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">
+          Zero manual maintenance
+        </p>
+        <h2 class="mx-auto mt-4 max-w-4xl text-5xl font-black tracking-[-0.055em] text-white sm:text-7xl">
+          Publish on GitHub.<br>The portfolio follows.
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-400">
+          New public repositories automatically become new cards the next time this page refreshes.
+        </p>
+        <div class="mt-9 flex flex-wrap justify-center gap-3">
+          <a
+            href="https://github.com/new"
+            target="_blank"
+            rel="noreferrer"
+            class="primary-button"
+          >Create a repository ↗</a>
+          <a
+            href="https://github.com/argyrios-dev"
+            target="_blank"
+            rel="noreferrer"
+            class="secondary-button"
+          >Open GitHub profile ↗</a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container footer-top">
+  <footer class="border-t border-white/8 py-10">
+    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 text-sm text-slate-500 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8">
       <div>
-        <strong class="footer-title">argyrios-dev</strong>
-        <p>Native macOS utilities and privacy-first software.</p>
+        <strong class="block text-xl font-black tracking-tight text-white">argyrios-dev</strong>
+        <span>Native apps, open-source tools and privacy-first software.</span>
       </div>
 
-      <div class="footer-links">
-        <a href="https://github.com/argyrios-dev" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="https://github.com/argyrios-dev?tab=repositories" target="_blank" rel="noreferrer">Repositories</a>
-        <a href="https://github.com/argyrios-dev?tab=stars" target="_blank" rel="noreferrer">Stars</a>
+      <div class="flex flex-wrap gap-5">
+        <a class="transition hover:text-white" href="https://github.com/argyrios-dev" target="_blank" rel="noreferrer">
+          GitHub
+        </a>
+        <a class="transition hover:text-white" href="https://github.com/argyrios-dev?tab=repositories" target="_blank" rel="noreferrer">
+          Repositories
+        </a>
       </div>
     </div>
 
-    <div class="container footer-bottom">
+    <div class="mx-auto mt-8 flex max-w-7xl flex-col gap-2 border-t border-white/8 px-4 pt-6 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600 sm:px-6 md:flex-row md:justify-between lg:px-8">
       <span>© <span id="currentYear"></span> argyrios-dev</span>
-      <span>Projects loaded automatically from GitHub</span>
+      <span>Repository data loaded automatically from GitHub</span>
     </div>
   </footer>
 
-  <template id="projectTemplate">
-    <article class="project-card">
-      <a class="project-visual" target="_blank" rel="noreferrer">
-        <img class="project-image" alt="" loading="lazy">
-        <span class="project-status"></span>
-        <span class="project-language-badge"></span>
+  <template id="projectCardTemplate">
+    <article class="project-card flex min-h-[31rem] flex-col">
+      <a
+        class="project-primary-link relative block aspect-[16/9] overflow-hidden border-b border-white/10 bg-slate-900"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img class="project-preview absolute inset-0 h-full w-full object-cover" alt="" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent"></div>
+        <div class="absolute left-4 top-4 flex flex-wrap gap-2">
+          <span class="project-status rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white backdrop-blur-xl"></span>
+        </div>
+        <span class="project-language absolute right-4 top-4 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white backdrop-blur-xl"></span>
       </a>
 
-      <div class="project-content">
-        <div class="project-title-row">
-          <div>
-            <span class="project-owner">argyrios-dev /</span>
-            <h3 class="project-title"></h3>
+      <div class="flex flex-1 flex-col p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div class="min-w-0">
+            <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600">
+              argyrios-dev /
+            </p>
+            <h3 class="project-name mt-1 truncate text-2xl font-black tracking-[-0.04em] text-white"></h3>
           </div>
-          <span class="project-arrow" aria-hidden="true">↗</span>
+          <span class="text-xl text-cyan-200">↗</span>
         </div>
 
-        <p class="project-description"></p>
+        <p class="project-description line-clamp-3 mt-4 min-h-[4.5rem] text-sm leading-6 text-slate-400"></p>
 
-        <div class="project-metrics">
+        <div class="project-metrics mt-4 flex flex-wrap gap-4 text-xs font-semibold text-slate-500">
           <span class="project-stars"></span>
           <span class="project-forks"></span>
           <span class="project-updated"></span>
         </div>
 
-        <div class="project-topics"></div>
+        <div class="project-topics mt-5 flex min-h-7 flex-wrap gap-2"></div>
 
-        <div class="project-actions">
+        <div class="mt-auto flex gap-2 pt-6">
           <a
-            class="project-action project-action-primary project-website"
+            class="project-view flex min-h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-violet-400 via-cyan-300 to-emerald-300 px-4 text-center text-sm font-black text-slate-950 transition hover:brightness-110"
             target="_blank"
             rel="noreferrer"
-          >Open website ↗</a>
+          >View Project ↗</a>
           <a
-            class="project-action project-action-secondary project-source"
+            class="project-code flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-bold text-white transition hover:border-cyan-300/40 hover:bg-white/10"
             target="_blank"
             rel="noreferrer"
-          >View source ↗</a>
+            aria-label="View source code"
+          >Code</a>
         </div>
       </div>
     </article>
   </template>
+
+  <script>
+    "use strict";
+
+    const CONFIG = Object.freeze({
+      username: "argyrios-dev",
+      excludedRepository: "argyrios-dev.github.io",
+      apiBase: "https://api.github.com",
+      pageSize: 100,
+      maximumPages: 10,
+      initialCards: 9,
+      cardsPerLoad: 9,
+      repositoryCacheKey: "argyrios-dev:repositories:v1",
+      previewCacheKey: "argyrios-dev:readme-previews:v1",
+      repositoryCacheDuration: 30 * 60 * 1000,
+      previewCacheDuration: 24 * 60 * 60 * 1000,
+      previewConcurrency: 4
+    });
+
+    const state = {
+      repositories: [],
+      query: "",
+      filter: "all",
+      sort: "updated",
+      visibleCount: CONFIG.initialCards,
+      previewMemoryCache: new Map(),
+      previewQueue: [],
+      activePreviewWorkers: 0
+    };
+
+    const elements = {
+      repositoryCount: document.getElementById("repositoryCount"),
+      websiteCount: document.getElementById("websiteCount"),
+      starCount: document.getElementById("starCount"),
+      refreshDate: document.getElementById("refreshDate"),
+      searchInput: document.getElementById("searchInput"),
+      sortSelect: document.getElementById("sortSelect"),
+      filterButtons: [...document.querySelectorAll("[data-filter]")],
+      resultsSummary: document.getElementById("resultsSummary"),
+      projectsGrid: document.getElementById("projectsGrid"),
+      loadMoreContainer: document.getElementById("loadMoreContainer"),
+      loadMoreButton: document.getElementById("loadMoreButton"),
+      cardTemplate: document.getElementById("projectCardTemplate"),
+      currentYear: document.getElementById("currentYear")
+    };
+
+    elements.currentYear.textContent = String(new Date().getFullYear());
+
+    function isValidHTTPURL(value) {
+      if (typeof value !== "string" || value.trim() === "") {
+        return false;
+      }
+
+      try {
+        const url = new URL(value);
+        return url.protocol === "http:" || url.protocol === "https:";
+      } catch {
+        return false;
+      }
+    }
+
+    function encodeGitHubPath(value) {
+      return String(value)
+        .split("/")
+        .map((segment) => encodeURIComponent(segment))
+        .join("/");
+    }
+
+    function projectURL(repository) {
+      if (repository.has_pages === true) {
+        if (
+          repository.name.toLowerCase() ===
+          `${CONFIG.username}.github.io`.toLowerCase()
+        ) {
+          return `https://${CONFIG.username}.github.io/`;
+        }
+
+        return (
+          `https://${CONFIG.username}.github.io/` +
+          `${encodeURIComponent(repository.name)}/`
+        );
+      }
+
+      if (isValidHTTPURL(repository.homepage)) {
+        return repository.homepage.trim();
+      }
+
+      return repository.html_url;
+    }
+
+    function hasExternalProject(repository) {
+      return (
+        repository.has_pages === true ||
+        isValidHTTPURL(repository.homepage)
+      );
+    }
+
+    function rawReadmeURL(repository, fileName = "README.md") {
+      const branch = encodeGitHubPath(repository.default_branch || "main");
+
+      return (
+        `https://raw.githubusercontent.com/` +
+        `${encodeURIComponent(CONFIG.username)}/` +
+        `${encodeURIComponent(repository.name)}/` +
+        `${branch}/${encodeGitHubPath(fileName)}`
+      );
+    }
+
+    function fallbackPreviewDataURL(repository) {
+      const language = repository.language || "Open Source";
+      const safeName = escapeXML(repository.name);
+      const safeLanguage = escapeXML(language);
+
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+          <defs>
+            <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0f172a"/>
+              <stop offset=".48" stop-color="#111827"/>
+              <stop offset="1" stop-color="#020617"/>
+            </linearGradient>
+            <radialGradient id="violet" cx="0" cy="0" r="1" gradientTransform="translate(230 120) rotate(38) scale(520)">
+              <stop stop-color="#8b5cf6" stop-opacity=".55"/>
+              <stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="cyan" cx="0" cy="0" r="1" gradientTransform="translate(1080 580) rotate(-145) scale(520)">
+              <stop stop-color="#22d3ee" stop-opacity=".4"/>
+              <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+            </radialGradient>
+            <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+              <path d="M42 0H0V42" fill="none" stroke="#fff" stroke-opacity=".045"/>
+            </pattern>
+          </defs>
+          <rect width="1280" height="720" fill="url(#background)"/>
+          <rect width="1280" height="720" fill="url(#violet)"/>
+          <rect width="1280" height="720" fill="url(#cyan)"/>
+          <rect width="1280" height="720" fill="url(#grid)"/>
+          <g transform="translate(84 84)">
+            <rect width="1112" height="552" rx="38" fill="#020617" fill-opacity=".36" stroke="#fff" stroke-opacity=".11"/>
+            <circle cx="76" cy="76" r="11" fill="#a78bfa"/>
+            <circle cx="110" cy="76" r="11" fill="#67e8f9"/>
+            <circle cx="144" cy="76" r="11" fill="#6ee7b7"/>
+            <text x="76" y="292" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="70" font-weight="800">${safeName}</text>
+            <text x="79" y="362" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="30">${safeLanguage} · github.com/${CONFIG.username}</text>
+            <path d="M78 432H450" stroke="#67e8f9" stroke-width="6" stroke-linecap="round" opacity=".85"/>
+          </g>
+        </svg>
+      `;
+
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function escapeXML(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&apos;");
+    }
+
+    function formatCompactNumber(value) {
+      return new Intl.NumberFormat("en", {
+        notation: Number(value) >= 1000 ? "compact" : "standard",
+        maximumFractionDigits: 1
+      }).format(Number(value) || 0);
+    }
+
+    function formatDate(value) {
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "Unknown";
+      }
+
+      return new Intl.DateTimeFormat("en", {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }).format(date);
+    }
+
+    function daysSince(value) {
+      const timestamp = new Date(value).getTime();
+
+      if (Number.isNaN(timestamp)) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      return (Date.now() - timestamp) / 86400000;
+    }
+
+    function readJSONCache(key, maximumAge) {
+      try {
+        const value = localStorage.getItem(key);
+
+        if (!value) {
+          return null;
+        }
+
+        const parsed = JSON.parse(value);
+
+        if (
+          !parsed ||
+          typeof parsed.savedAt !== "number" ||
+          Date.now() - parsed.savedAt > maximumAge
+        ) {
+          return null;
+        }
+
+        return parsed.data;
+      } catch {
+        return null;
+      }
+    }
+
+    function writeJSONCache(key, data) {
+      try {
+        localStorage.setItem(
+          key,
+          JSON.stringify({
+            savedAt: Date.now(),
+            data
+          })
+        );
+      } catch {
+        // The portfolio still works when browser storage is unavailable.
+      }
+    }
+
+    function loadPreviewCache() {
+      const cached = readJSONCache(
+        CONFIG.previewCacheKey,
+        CONFIG.previewCacheDuration
+      );
+
+      if (!cached || typeof cached !== "object") {
+        return;
+      }
+
+      Object.entries(cached).forEach(([repositoryName, url]) => {
+        if (typeof url === "string") {
+          state.previewMemoryCache.set(repositoryName, url);
+        }
+      });
+    }
+
+    function savePreviewCache() {
+      writeJSONCache(
+        CONFIG.previewCacheKey,
+        Object.fromEntries(state.previewMemoryCache)
+      );
+    }
+
+    async function fetchRepositoryPage(page) {
+      const parameters = new URLSearchParams({
+        type: "owner",
+        sort: "updated",
+        direction: "desc",
+        per_page: String(CONFIG.pageSize),
+        page: String(page)
+      });
+
+      const response = await fetch(
+        `${CONFIG.apiBase}/users/${encodeURIComponent(CONFIG.username)}/repos?${parameters}`,
+        {
+          headers: {
+            Accept: "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28"
+          }
+        }
+      );
+
+      if (!response.ok) {
+        const error = new Error(
+          `GitHub API request failed with status ${response.status}.`
+        );
+
+        error.status = response.status;
+        error.rateLimitRemaining = response.headers.get(
+          "x-ratelimit-remaining"
+        );
+
+        throw error;
+      }
+
+      const repositories = await response.json();
+
+      if (!Array.isArray(repositories)) {
+        throw new Error("GitHub returned an unexpected repository response.");
+      }
+
+      return repositories;
+    }
+
+    async function fetchAllRepositories() {
+      const repositories = [];
+
+      for (let page = 1; page <= CONFIG.maximumPages; page += 1) {
+        const batch = await fetchRepositoryPage(page);
+        repositories.push(...batch);
+
+        if (batch.length < CONFIG.pageSize) {
+          break;
+        }
+      }
+
+      return repositories.filter((repository) => (
+        repository &&
+        repository.private === false &&
+        repository.name !== CONFIG.excludedRepository
+      ));
+    }
+
+    function extractFirstReadmeImage(markdown) {
+      const matches = [];
+
+      const markdownPattern =
+        /!\[[^\]]*]\(\s*<?([^)\s>]+)(?:\s+["'][^"']*["'])?>?\s*\)/gi;
+
+      const htmlPattern =
+        /<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi;
+
+      let match;
+
+      while ((match = markdownPattern.exec(markdown)) !== null) {
+        matches.push({
+          index: match.index,
+          source: match[1]
+        });
+      }
+
+      while ((match = htmlPattern.exec(markdown)) !== null) {
+        matches.push({
+          index: match.index,
+          source: match[1]
+        });
+      }
+
+      matches.sort((left, right) => left.index - right.index);
+
+      return matches.length > 0 ? matches[0].source.trim() : null;
+    }
+
+    function normalizeGitHubImageURL(source, readmeURL, repository) {
+      if (!source) {
+        return null;
+      }
+
+      let value = source
+        .trim()
+        .replace(/^<|>$/g, "")
+        .replaceAll("&amp;", "&");
+
+      if (
+        value.startsWith("data:") ||
+        value.startsWith("javascript:") ||
+        value.startsWith("#")
+      ) {
+        return null;
+      }
+
+      if (value.startsWith("//")) {
+        return `https:${value}`;
+      }
+
+      if (isValidHTTPURL(value)) {
+        try {
+          const url = new URL(value);
+
+          if (
+            url.hostname === "github.com" &&
+            url.pathname.includes("/blob/")
+          ) {
+            const blobMarker = "/blob/";
+            const markerIndex = url.pathname.indexOf(blobMarker);
+            const beforeBlob = url.pathname.slice(0, markerIndex);
+            const afterBlob = url.pathname.slice(
+              markerIndex + blobMarker.length
+            );
+
+            return (
+              `https://raw.githubusercontent.com` +
+              `${beforeBlob}/${afterBlob}`
+            );
+          }
+
+          return url.href;
+        } catch {
+          return null;
+        }
+      }
+
+      try {
+        return new URL(value, readmeURL).href;
+      } catch {
+        const branch = encodeGitHubPath(
+          repository.default_branch || "main"
+        );
+
+        return (
+          `https://raw.githubusercontent.com/` +
+          `${encodeURIComponent(CONFIG.username)}/` +
+          `${encodeURIComponent(repository.name)}/` +
+          `${branch}/${value.replace(/^\.?\//, "")}`
+        );
+      }
+    }
+
+    async function fetchReadmeText(repository) {
+      const candidateNames = [
+        "README.md",
+        "Readme.md",
+        "readme.md",
+        "README.MD"
+      ];
+
+      for (const candidateName of candidateNames) {
+        const url = rawReadmeURL(repository, candidateName);
+
+        try {
+          const response = await fetch(url, {
+            cache: "force-cache"
+          });
+
+          if (response.ok) {
+            return {
+              text: await response.text(),
+              url
+            };
+          }
+        } catch {
+          // Try the next common README filename.
+        }
+      }
+
+      const endpoint =
+        `${CONFIG.apiBase}/repos/` +
+        `${encodeURIComponent(CONFIG.username)}/` +
+        `${encodeURIComponent(repository.name)}/readme`;
+
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            Accept: "application/vnd.github.raw+json",
+            "X-GitHub-Api-Version": "2022-11-28"
+          }
+        });
+
+        if (response.ok) {
+          return {
+            text: await response.text(),
+            url: rawReadmeURL(repository)
+          };
+        }
+      } catch {
+        // The gradient placeholder is used when a README cannot be read.
+      }
+
+      return null;
+    }
+
+    async function discoverPreviewURL(repository) {
+      const cached = state.previewMemoryCache.get(repository.name);
+
+      if (cached) {
+        return cached;
+      }
+
+      const readme = await fetchReadmeText(repository);
+      let previewURL = null;
+
+      if (readme) {
+        const imageSource = extractFirstReadmeImage(readme.text);
+
+        previewURL = normalizeGitHubImageURL(
+          imageSource,
+          readme.url,
+          repository
+        );
+      }
+
+      const finalURL =
+        previewURL || fallbackPreviewDataURL(repository);
+
+      state.previewMemoryCache.set(repository.name, finalURL);
+      savePreviewCache();
+
+      return finalURL;
+    }
+
+    function queuePreview(repository, imageElement) {
+      state.previewQueue.push({
+        repository,
+        imageElement
+      });
+
+      runPreviewWorkers();
+    }
+
+    function runPreviewWorkers() {
+      while (
+        state.activePreviewWorkers < CONFIG.previewConcurrency &&
+        state.previewQueue.length > 0
+      ) {
+        const task = state.previewQueue.shift();
+        state.activePreviewWorkers += 1;
+
+        discoverPreviewURL(task.repository)
+          .then((url) => {
+            if (!task.imageElement.isConnected) {
+              return;
+            }
+
+            task.imageElement.src = url;
+          })
+          .catch(() => {
+            if (task.imageElement.isConnected) {
+              task.imageElement.src =
+                fallbackPreviewDataURL(task.repository);
+            }
+          })
+          .finally(() => {
+            state.activePreviewWorkers -= 1;
+            runPreviewWorkers();
+          });
+      }
+    }
+
+    function buildTag(text) {
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = text;
+      return tag;
+    }
+
+    function buildProjectCard(repository) {
+      const fragment = elements.cardTemplate.content.cloneNode(true);
+      const card = fragment.querySelector(".project-card");
+      const primaryLink = fragment.querySelector(
+        ".project-primary-link"
+      );
+      const image = fragment.querySelector(".project-preview");
+      const status = fragment.querySelector(".project-status");
+      const language = fragment.querySelector(".project-language");
+      const name = fragment.querySelector(".project-name");
+      const description = fragment.querySelector(
+        ".project-description"
+      );
+      const stars = fragment.querySelector(".project-stars");
+      const forks = fragment.querySelector(".project-forks");
+      const updated = fragment.querySelector(".project-updated");
+      const topics = fragment.querySelector(".project-topics");
+      const viewButton = fragment.querySelector(".project-view");
+      const codeButton = fragment.querySelector(".project-code");
+
+      const destination = projectURL(repository);
+      const websiteAvailable = hasExternalProject(repository);
+
+      card.dataset.repository = repository.name.toLowerCase();
+      primaryLink.href = destination;
+      image.src = fallbackPreviewDataURL(repository);
+      image.alt = `${repository.name} project preview`;
+      image.addEventListener(
+        "error",
+        () => {
+          image.src = fallbackPreviewDataURL(repository);
+        },
+        { once: true }
+      );
+
+      status.textContent = websiteAvailable
+        ? "Website available"
+        : "Public repository";
+
+      language.textContent =
+        repository.language || "Open source";
+
+      name.textContent = repository.name;
+      description.textContent =
+        repository.description ||
+        "An open-source project by argyrios-dev.";
+
+      stars.textContent =
+        `★ ${formatCompactNumber(repository.stargazers_count)}`;
+
+      forks.textContent =
+        `⑂ ${formatCompactNumber(repository.forks_count)}`;
+
+      updated.textContent =
+        `Updated ${formatDate(
+          repository.pushed_at || repository.updated_at
+        )}`;
+
+      const repositoryTopics =
+        Array.isArray(repository.topics)
+          ? repository.topics.slice(0, 4)
+          : [];
+
+      if (repositoryTopics.length === 0) {
+        topics.append(
+          buildTag(repository.language || "project")
+        );
+      } else {
+        repositoryTopics.forEach((topic) => {
+          topics.append(buildTag(topic));
+        });
+      }
+
+      viewButton.href = destination;
+      viewButton.textContent = websiteAvailable
+        ? "View Project ↗"
+        : "Open Repository ↗";
+
+      codeButton.href = repository.html_url;
+      codeButton.setAttribute(
+        "aria-label",
+        `View ${repository.name} source code`
+      );
+
+      queuePreview(repository, image);
+
+      return fragment;
+    }
+
+    function repositorySearchText(repository) {
+      return [
+        repository.name,
+        repository.description,
+        repository.language,
+        ...(Array.isArray(repository.topics)
+          ? repository.topics
+          : [])
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+    }
+
+    function matchesFilter(repository) {
+      const queryMatches =
+        state.query === "" ||
+        repositorySearchText(repository).includes(state.query);
+
+      if (!queryMatches) {
+        return false;
+      }
+
+      switch (state.filter) {
+        case "website":
+          return hasExternalProject(repository);
+
+        case "swift":
+          return (
+            String(repository.language || "").toLowerCase() ===
+            "swift"
+          );
+
+        case "recent":
+          return (
+            daysSince(
+              repository.pushed_at || repository.updated_at
+            ) <= 90
+          );
+
+        case "all":
+        default:
+          return true;
+      }
+    }
+
+    function sortedRepositories(repositories) {
+      return [...repositories].sort((left, right) => {
+        switch (state.sort) {
+          case "created":
+            return (
+              new Date(right.created_at).getTime() -
+              new Date(left.created_at).getTime()
+            );
+
+          case "stars":
+            return (
+              Number(right.stargazers_count || 0) -
+              Number(left.stargazers_count || 0)
+            );
+
+          case "name":
+            return left.name.localeCompare(right.name, "en", {
+              sensitivity: "base"
+            });
+
+          case "updated":
+          default:
+            return (
+              new Date(
+                right.pushed_at || right.updated_at
+              ).getTime() -
+              new Date(
+                left.pushed_at || left.updated_at
+              ).getTime()
+            );
+        }
+      });
+    }
+
+    function visibleRepositories() {
+      return sortedRepositories(
+        state.repositories.filter(matchesFilter)
+      );
+    }
+
+    function renderEmptyState() {
+      const container = document.createElement("div");
+      container.className =
+        "glass-panel col-span-full grid min-h-72 place-items-center rounded-3xl p-10 text-center";
+
+      const content = document.createElement("div");
+      const title = document.createElement("strong");
+      const message = document.createElement("p");
+
+      title.className = "text-lg font-bold text-white";
+      title.textContent = "No matching projects.";
+
+      message.className = "mt-2 text-sm text-slate-500";
+      message.textContent =
+        "Try another search term or choose a different filter.";
+
+      content.append(title, message);
+      container.append(content);
+      elements.projectsGrid.replaceChildren(container);
+      elements.loadMoreContainer.hidden = true;
+    }
+
+    function updateResultsSummary(total) {
+      const hasSearch = state.query !== "";
+      const hasFilter = state.filter !== "all";
+
+      if (!hasSearch && !hasFilter) {
+        elements.resultsSummary.hidden = true;
+        elements.resultsSummary.textContent = "";
+        return;
+      }
+
+      elements.resultsSummary.hidden = false;
+      elements.resultsSummary.textContent =
+        `${total} matching project${total === 1 ? "" : "s"}`;
+    }
+
+    function renderProjects() {
+      state.previewQueue.length = 0;
+
+      const repositories = visibleRepositories();
+      updateResultsSummary(repositories.length);
+
+      if (repositories.length === 0) {
+        renderEmptyState();
+        return;
+      }
+
+      const displayed = repositories.slice(
+        0,
+        state.visibleCount
+      );
+
+      const fragment = document.createDocumentFragment();
+
+      displayed.forEach((repository) => {
+        fragment.append(buildProjectCard(repository));
+      });
+
+      elements.projectsGrid.replaceChildren(fragment);
+
+      const remaining = repositories.length - displayed.length;
+      elements.loadMoreContainer.hidden = remaining <= 0;
+
+      if (remaining > 0) {
+        elements.loadMoreButton.textContent =
+          `Show more projects (${remaining} remaining)`;
+      }
+    }
+
+    function updateStatistics() {
+      const websites = state.repositories.filter(
+        hasExternalProject
+      ).length;
+
+      const totalStars = state.repositories.reduce(
+        (total, repository) =>
+          total + Number(repository.stargazers_count || 0),
+        0
+      );
+
+      elements.repositoryCount.textContent =
+        String(state.repositories.length);
+
+      elements.websiteCount.textContent =
+        String(websites);
+
+      elements.starCount.textContent =
+        formatCompactNumber(totalStars);
+
+      elements.refreshDate.textContent =
+        new Intl.DateTimeFormat("en", {
+          month: "short",
+          day: "numeric"
+        }).format(new Date());
+    }
+
+    function useRepositories(repositories) {
+      state.repositories = repositories;
+      state.visibleCount = CONFIG.initialCards;
+      updateStatistics();
+      renderProjects();
+    }
+
+    function renderLoadError(error) {
+      const wrapper = document.createElement("div");
+      const content = document.createElement("div");
+      const title = document.createElement("strong");
+      const message = document.createElement("p");
+      const link = document.createElement("a");
+
+      wrapper.className =
+        "glass-panel col-span-full grid min-h-72 place-items-center rounded-3xl p-10 text-center";
+
+      title.className = "text-lg font-bold text-white";
+
+      const rateLimited =
+        error &&
+        (
+          error.status === 403 ||
+          error.rateLimitRemaining === "0"
+        );
+
+      title.textContent = rateLimited
+        ? "GitHub API limit reached."
+        : "Projects could not be loaded.";
+
+      message.className =
+        "mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500";
+
+      message.textContent = rateLimited
+        ? "GitHub limits anonymous API requests by IP address. The page will work again after the limit resets."
+        : "GitHub may be temporarily unavailable. You can still open the complete repository list.";
+
+      link.className = "secondary-button mt-6";
+      link.href =
+        `https://github.com/${CONFIG.username}?tab=repositories`;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = "View repositories on GitHub ↗";
+
+      content.append(title, message, link);
+      wrapper.append(content);
+      elements.projectsGrid.replaceChildren(wrapper);
+      elements.loadMoreContainer.hidden = true;
+    }
+
+    function resetAndRender() {
+      state.visibleCount = CONFIG.initialCards;
+      renderProjects();
+    }
+
+    function installEventListeners() {
+      elements.searchInput.addEventListener("input", () => {
+        state.query =
+          elements.searchInput.value.trim().toLowerCase();
+        resetAndRender();
+      });
+
+      elements.sortSelect.addEventListener("change", () => {
+        state.sort = elements.sortSelect.value;
+        resetAndRender();
+      });
+
+      elements.filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          state.filter = button.dataset.filter || "all";
+
+          elements.filterButtons.forEach((candidate) => {
+            candidate.setAttribute(
+              "aria-pressed",
+              String(candidate === button)
+            );
+          });
+
+          resetAndRender();
+        });
+      });
+
+      elements.loadMoreButton.addEventListener("click", () => {
+        state.visibleCount += CONFIG.cardsPerLoad;
+        renderProjects();
+      });
+    }
+
+    async function initialize() {
+      installEventListeners();
+      loadPreviewCache();
+
+      const cachedRepositories = readJSONCache(
+        CONFIG.repositoryCacheKey,
+        CONFIG.repositoryCacheDuration
+      );
+
+      if (Array.isArray(cachedRepositories)) {
+        useRepositories(cachedRepositories);
+      }
+
+      try {
+        const repositories = await fetchAllRepositories();
+
+        writeJSONCache(
+          CONFIG.repositoryCacheKey,
+          repositories
+        );
+
+        useRepositories(repositories);
+      } catch (error) {
+        if (!Array.isArray(cachedRepositories)) {
+          renderLoadError(error);
+        }
+
+        console.error(
+          "Unable to refresh GitHub repository data:",
+          error
+        );
+      }
+    }
+
+    initialize();
+  </script>
 </body>
 </html>
