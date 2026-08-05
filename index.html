@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07080c">
+  <meta name="description" content="Open-source macOS apps and privacy-first software by argyrios-dev.">
+  <meta property="og:title" content="argyrios-dev — Projects">
+  <meta property="og:description" content="A living collection of open-source projects by argyrios-dev.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://opengraph.githubassets.com/1/argyrios-dev">
+  <title>argyrios-dev — Projects</title>
+  <link rel="preconnect" href="https://api.github.com">
+  <link rel="preconnect" href="https://opengraph.githubassets.com">
+  <link rel="icon" href="https://github.com/argyrios-dev.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <nav class="navigation">
+    <div class="container navigation-inner">
+      <a class="identity" href="#top" aria-label="Go to the top">
+        <img
+          class="avatar"
+          src="https://github.com/argyrios-dev.png"
+          alt="argyrios-dev avatar"
+          width="42"
+          height="42"
+        >
+        <span class="identity-text">
+          <strong>argyrios-dev</strong>
+          <small>Independent developer</small>
+        </span>
+      </a>
+
+      <div class="navigation-links">
+        <a href="#projects">Projects</a>
+        <a href="#principles">Principles</a>
+        <a
+          class="navigation-button"
+          href="https://github.com/argyrios-dev"
+          target="_blank"
+          rel="noreferrer"
+        >GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top" class="hero container">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      Native software · Open source
+    </div>
+
+    <h1>
+      <span class="gradient-text">Small apps.<br>Clear purpose.</span>
+    </h1>
+
+    <p class="hero-copy">
+      A self-updating collection of public projects by
+      <strong>argyrios-dev</strong>, focused on native macOS experiences,
+      privacy and thoughtful utility.
+    </p>
+
+    <div class="hero-actions">
+      <a class="button button-primary" href="#projects">Explore projects ↓</a>
+      <a
+        class="button button-secondary"
+        href="https://github.com/argyrios-dev?tab=repositories"
+        target="_blank"
+        rel="noreferrer"
+      >All repositories ↗</a>
+    </div>
+
+    <div class="live-note">
+      <span class="live-dot"></span>
+      Every new public repository appears automatically.
+    </div>
+
+    <div class="stats" aria-label="GitHub statistics">
+      <div class="stat">
+        <strong id="repositoryCount">—</strong>
+        <span>Public projects</span>
+      </div>
+      <div class="stat">
+        <strong id="pagesCount">—</strong>
+        <span>Project websites</span>
+      </div>
+      <div class="stat">
+        <strong id="totalStars">—</strong>
+        <span>Total stars</span>
+      </div>
+      <div class="stat">
+        <strong id="lastRefresh">Live</strong>
+        <span>Project index</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="projects" class="projects-section container">
+      <div class="section-heading">
+        <div>
+          <div class="section-label">Published work</div>
+          <h2>Everything public.<br>Always current.</h2>
+          <p>
+            This page reads GitHub directly. No project card is maintained by
+            hand, so new public repositories appear automatically.
+          </p>
+        </div>
+
+        <div class="controls">
+          <label class="search-control">
+            <span class="visually-hidden">Search repositories</span>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search projects"
+              autocomplete="off"
+            >
+            <span aria-hidden="true">⌕</span>
+          </label>
+
+          <label class="select-control">
+            <span class="visually-hidden">Filter projects</span>
+            <select id="projectFilter">
+              <option value="all">All projects</option>
+              <option value="website">With website</option>
+              <option value="source">Source only</option>
+              <option value="swift">Swift</option>
+              <option value="recent">Recently updated</option>
+            </select>
+          </label>
+
+          <label class="select-control">
+            <span class="visually-hidden">Sort projects</span>
+            <select id="projectSort">
+              <option value="updated">Recently updated</option>
+              <option value="created">Recently created</option>
+              <option value="stars">Most starred</option>
+              <option value="name">Name</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="activeFilters" class="active-filters" hidden></div>
+
+      <div id="projectsGrid" class="projects-grid" aria-live="polite">
+        <div class="state-card">
+          <div class="spinner" aria-hidden="true"></div>
+          <strong>Loading public projects…</strong>
+          <span>Reading repositories from GitHub.</span>
+        </div>
+      </div>
+
+      <div id="loadMoreWrap" class="load-more-wrap" hidden>
+        <button id="loadMoreButton" class="button button-secondary" type="button">
+          Show more projects
+        </button>
+      </div>
+    </section>
+
+    <section id="principles" class="principles container">
+      <div class="principles-copy">
+        <div class="section-label">How I build</div>
+        <h2>Native, focused<br>and respectful.</h2>
+        <p>
+          Software should feel at home on the platform, solve a real problem
+          and collect no more information than it genuinely needs.
+        </p>
+      </div>
+
+      <div class="principles-list">
+        <article>
+          <span>01</span>
+          <div>
+            <h3>Native first</h3>
+            <p>Built for the platform instead of merely running on it.</p>
+          </div>
+        </article>
+
+        <article>
+          <span>02</span>
+          <div>
+            <h3>Privacy by architecture</h3>
+            <p>Local processing and minimal data collection whenever possible.</p>
+          </div>
+        </article>
+
+        <article>
+          <span>03</span>
+          <div>
+            <h3>Open source</h3>
+            <p>Readable code, transparent behavior and public issue tracking.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing container">
+      <div class="section-label">Living portfolio</div>
+      <h2>Build it once.<br>Let GitHub keep it current.</h2>
+      <p>
+        Create a public repository under <strong>argyrios-dev</strong> and it
+        will become visible here automatically.
+      </p>
+      <div class="hero-actions">
+        <a
+          class="button button-primary"
+          href="https://github.com/new"
+          target="_blank"
+          rel="noreferrer"
+        >Create a repository ↗</a>
+        <a
+          class="button button-secondary"
+          href="https://github.com/argyrios-dev"
+          target="_blank"
+          rel="noreferrer"
+        >View profile ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-top">
+      <div>
+        <strong class="footer-title">argyrios-dev</strong>
+        <p>Native macOS utilities and privacy-first software.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://github.com/argyrios-dev" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://github.com/argyrios-dev?tab=repositories" target="_blank" rel="noreferrer">Repositories</a>
+        <a href="https://github.com/argyrios-dev?tab=stars" target="_blank" rel="noreferrer">Stars</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© <span id="currentYear"></span> argyrios-dev</span>
+      <span>Projects loaded automatically from GitHub</span>
+    </div>
+  </footer>
+
+  <template id="projectTemplate">
+    <article class="project-card">
+      <a class="project-visual" target="_blank" rel="noreferrer">
+        <img class="project-image" alt="" loading="lazy">
+        <span class="project-status"></span>
+        <span class="project-language-badge"></span>
+      </a>
+
+      <div class="project-content">
+        <div class="project-title-row">
+          <div>
+            <span class="project-owner">argyrios-dev /</span>
+            <h3 class="project-title"></h3>
+          </div>
+          <span class="project-arrow" aria-hidden="true">↗</span>
+        </div>
+
+        <p class="project-description"></p>
+
+        <div class="project-metrics">
+          <span class="project-stars"></span>
+          <span class="project-forks"></span>
+          <span class="project-updated"></span>
+        </div>
+
+        <div class="project-topics"></div>
+
+        <div class="project-actions">
+          <a
+            class="project-action project-action-primary project-website"
+            target="_blank"
+            rel="noreferrer"
+          >Open website ↗</a>
+          <a
+            class="project-action project-action-secondary project-source"
+            target="_blank"
+            rel="noreferrer"
+          >View source ↗</a>
+        </div>
+      </div>
+    </article>
+  </template>
+</body>
+</html>
