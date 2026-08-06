@@ -16,20 +16,50 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://opengraph.githubassets.com/portfolio/argyrios-dev">
   <title>argyrios-dev — Automated Project Portfolio</title>
+  <style>
+    html { background: #020617; color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #020617;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "SF Pro Text", "Segoe UI", sans-serif;
+    }
+    [hidden] { display: none !important; }
+  </style>
+
 
   <link rel="preconnect" href="https://api.github.com">
   <link rel="preconnect" href="https://raw.githubusercontent.com">
   <link rel="preconnect" href="https://opengraph.githubassets.com">
   <link rel="icon" type="image/png" href="https://github.com/argyrios-dev.png">
 
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script>
+    tailwind = {
+      config: {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: [
+                "Inter",
+                "-apple-system",
+                "BlinkMacSystemFont",
+                "SF Pro Display",
+                "SF Pro Text",
+                "Segoe UI",
+                "sans-serif"
+              ]
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style type="text/tailwindcss">
-    @theme {
-      --font-sans:
-        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-        "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
-    }
 
     @layer base {
       :root {
@@ -108,7 +138,7 @@
       }
 
       .skeleton {
-        @apply animate-pulse rounded-3xl border border-white/8 bg-slate-900/65;
+        @apply animate-pulse rounded-3xl border border-white/10 bg-slate-900/65;
       }
 
       .stat-card {
@@ -180,10 +210,10 @@
   <div class="noise-layer pointer-events-none fixed inset-0 z-50 opacity-[0.018]"></div>
 
   <nav
-    class="sticky top-0 z-40 border-b border-white/8 bg-slate-950/70 backdrop-blur-2xl"
+    class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/70 backdrop-blur-2xl"
     aria-label="Main navigation"
   >
-    <div class="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto flex min-h-[4.5rem] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
       <a href="#top" class="flex min-w-0 items-center gap-3" aria-label="Go to the top">
         <img
           src="https://github.com/argyrios-dev.png"
@@ -296,7 +326,7 @@
             type="search"
             autocomplete="off"
             placeholder="Search repositories..."
-            class="h-13 w-full rounded-2xl border border-white/10 bg-slate-900/70 pl-5 pr-12 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300/50 focus:ring-4 focus:ring-cyan-300/10"
+            class="h-[3.25rem] w-full rounded-2xl border border-white/10 bg-slate-900/70 pl-5 pr-12 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300/50 focus:ring-4 focus:ring-cyan-300/10"
           >
           <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">
             ⌕
@@ -428,7 +458,7 @@
     </section>
   </main>
 
-  <footer class="border-t border-white/8 py-10">
+  <footer class="border-t border-white/10 py-10">
     <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 text-sm text-slate-500 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8">
       <div>
         <strong class="block text-xl font-black tracking-tight text-white">argyrios-dev</strong>
@@ -445,7 +475,7 @@
       </div>
     </div>
 
-    <div class="mx-auto mt-8 flex max-w-7xl flex-col gap-2 border-t border-white/8 px-4 pt-6 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600 sm:px-6 md:flex-row md:justify-between lg:px-8">
+    <div class="mx-auto mt-8 flex max-w-7xl flex-col gap-2 border-t border-white/10 px-4 pt-6 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600 sm:px-6 md:flex-row md:justify-between lg:px-8">
       <span>© <span id="currentYear"></span> argyrios-dev</span>
       <span>Repository data loaded automatically from GitHub</span>
     </div>
