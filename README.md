@@ -1,67 +1,63 @@
-# argyrios-dev Automated Portfolio
+# argyrios-dev — Portafolio de proyectos
 
-A self-updating GitHub Pages portfolio with no visitor-side GitHub API limit.
+Portafolio estático y manual para los proyectos públicos de
+[`argyrios-dev`](https://github.com/argyrios-dev).
 
-## Why this version avoids API limits
+La web presenta actualmente:
 
-The browser does not call the GitHub REST API.
+- [BridgeLock](https://github.com/argyrios-dev/BridgeLock)
+- [AirControll](https://github.com/argyrios-dev/AirControll)
 
-A GitHub Actions workflow uses the repository's built-in `GITHUB_TOKEN` to
-generate a static `projects.json` file. The website only downloads that file.
+## Por qué esta versión es manual
 
-This prevents visitors from consuming GitHub's anonymous API allowance.
+La web no consulta la API de GitHub y no necesita GitHub Actions.
 
-## Automatic updates
+Esto evita:
 
-The workflow runs:
+- Límites de la API.
+- Errores por peticiones anónimas.
+- Dependencias de JavaScript remoto.
+- Tarjetas incompletas por metadatos inesperados.
+- Cambios automáticos en la presentación.
 
-- Whenever `main` receives a push
-- Every six hours
-- Manually through the Actions tab
+Cada proyecto se añade de forma manual para controlar:
 
-It finds every public repository owned by `argyrios-dev`, excludes
-`argyrios-dev.github.io`, reads the first image from each README, and writes
-the result to `projects.json`.
+- Miniatura.
+- Icono.
+- Descripción.
+- Etiquetas.
+- Enlace a la web.
+- Enlace al código.
+- Enlace a releases.
 
-## Required repository setting
-
-Open:
-
-```text
-Settings → Actions → General → Workflow permissions
-```
-
-Select:
-
-```text
-Read and write permissions
-```
-
-Save the setting.
-
-The workflow needs this permission to commit the generated `projects.json`.
-
-## First run
-
-Open:
+## Archivos
 
 ```text
-Actions → Update Portfolio Data → Run workflow
+argyrios-dev.github.io/
+├── index.html
+└── README.md
 ```
 
-Run it on `main`.
+No necesita CSS, JavaScript, Node.js ni dependencias adicionales. Los estilos y
+el pequeño script de animación están incluidos dentro de `index.html`.
 
-After the workflow succeeds, `projects.json` will contain all public projects.
+## Publicar con GitHub Pages
 
-## GitHub Pages
+Crea o utiliza el repositorio:
 
-Open:
+```text
+argyrios-dev.github.io
+```
+
+Coloca `index.html` y `README.md` en la raíz de la rama `main`.
+
+Después abre:
 
 ```text
 Settings → Pages
 ```
 
-Choose:
+Selecciona:
 
 ```text
 Source: Deploy from a branch
@@ -69,29 +65,140 @@ Branch: main
 Folder: / (root)
 ```
 
-The site will be available at:
+La web se publicará en:
 
 ```text
 https://argyrios-dev.github.io/
 ```
 
-## Files
+## Subir desde Terminal
+
+```zsh
+cd ~/Downloads
+unzip -o argyrios-dev-proyectos-manual.zip
+cd argyrios-dev-proyectos-manual
+
+git init
+git branch -M main
+git add index.html README.md
+git commit -m "Create manual projects portfolio"
+git remote add origin https://github.com/argyrios-dev/argyrios-dev.github.io.git
+git push -u origin main
+```
+
+Cuando el repositorio ya está clonado:
+
+```zsh
+cp ~/Downloads/argyrios-dev-proyectos-manual/index.html \
+  ~/Downloads/argyrios-dev.github.io/index.html
+
+cp ~/Downloads/argyrios-dev-proyectos-manual/README.md \
+  ~/Downloads/argyrios-dev.github.io/README.md
+
+cd ~/Downloads/argyrios-dev.github.io
+git add index.html README.md
+git commit -m "Use manual BridgeLock and AirControll portfolio"
+git push
+```
+
+## Miniaturas utilizadas
+
+BridgeLock:
 
 ```text
-index.html
-projects.json
-scripts/generate-projects.mjs
-.github/workflows/update-projects.yml
-README.md
+https://raw.githubusercontent.com/argyrios-dev/BridgeLock/main/IntroREADME.png
 ```
 
-## Update frequency
+AirControll:
 
-The workflow currently runs every six hours:
-
-```yaml
-schedule:
-  - cron: "17 */6 * * *"
+```text
+https://raw.githubusercontent.com/argyrios-dev/AirControll/main/IntroREADME.png
 ```
 
-You can also run it manually immediately after creating a repository.
+Los iconos también se cargan directamente desde cada repositorio.
+
+## Añadir otro proyecto manualmente
+
+En `index.html`, busca:
+
+```html
+<div class="projects-grid">
+```
+
+Copia uno de los bloques completos:
+
+```html
+<article class="project-card reveal">
+  ...
+</article>
+```
+
+Después cambia:
+
+- Nombre del proyecto.
+- Descripción.
+- URL de la miniatura.
+- URL del icono.
+- Enlace de la web.
+- Enlace del repositorio.
+- Enlace de releases.
+- Etiquetas.
+
+Actualiza también este contador del hero:
+
+```html
+<strong>2</strong>
+```
+
+Por ejemplo, al añadir el tercer proyecto:
+
+```html
+<strong>3</strong>
+```
+
+## Dependencias
+
+Ninguna.
+
+La web utiliza exclusivamente:
+
+- HTML.
+- CSS nativo.
+- JavaScript nativo.
+- Imágenes públicas alojadas en los repositorios.
+
+## Privacidad
+
+La web no contiene:
+
+- Analytics.
+- Cookies.
+- API de GitHub.
+- Tokens.
+- Seguimiento.
+- Formularios.
+- Peticiones a servicios de terceros, salvo las imágenes públicas de GitHub.
+
+## Personalización
+
+Los colores principales se encuentran al principio de `index.html`:
+
+```css
+:root {
+  --bg: #05070d;
+  --violet: #9b8cff;
+  --cyan: #72dbff;
+  --green: #67e6a3;
+}
+```
+
+El favicon actual utiliza la imagen de perfil de `argyrios-dev`. Puede cambiarse
+modificando:
+
+```html
+<link
+  rel="icon"
+  type="image/png"
+  href="https://github.com/argyrios-dev.png"
+>
+```

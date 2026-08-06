@@ -1,1407 +1,1166 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth bg-slate-950">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#020617">
+  <meta name="theme-color" content="#05070d">
   <meta
     name="description"
-    content="A fully automated portfolio of public GitHub projects by argyrios-dev."
+    content="Proyectos nativos para macOS creados por argyrios-dev."
   >
-  <meta property="og:title" content="argyrios-dev — Projects">
+  <meta property="og:title" content="argyrios-dev — Proyectos">
   <meta
     property="og:description"
-    content="Native apps, open-source tools and privacy-first software by argyrios-dev."
+    content="Aplicaciones nativas, privadas y de código abierto para macOS."
   >
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://opengraph.githubassets.com/portfolio/argyrios-dev">
-  <title>argyrios-dev — Automated Project Portfolio</title>
+  <meta
+    property="og:image"
+    content="https://raw.githubusercontent.com/argyrios-dev/AirControll/main/IntroREADME.png"
+  >
+  <title>argyrios-dev — Proyectos para macOS</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://github.com/argyrios-dev.png"
+  >
+  <link
+    rel="apple-touch-icon"
+    href="https://github.com/argyrios-dev.png"
+  >
+
   <style>
-    html { background: #020617; color-scheme: dark; }
+    :root {
+      color-scheme: dark;
+      --bg: #05070d;
+      --bg-soft: #090d16;
+      --panel: rgba(255, 255, 255, 0.055);
+      --panel-strong: rgba(255, 255, 255, 0.085);
+      --line: rgba(255, 255, 255, 0.11);
+      --line-strong: rgba(255, 255, 255, 0.2);
+      --text: #f7f9fc;
+      --muted: #a4adbd;
+      --muted-2: #747f92;
+      --violet: #9b8cff;
+      --cyan: #72dbff;
+      --green: #67e6a3;
+      --max: 1220px;
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --shadow: 0 32px 100px rgba(0, 0, 0, 0.46);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      margin: 0;
+      min-width: 320px;
       min-height: 100vh;
-      background: #020617;
-      color: #f8fafc;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-        "SF Pro Text", "Segoe UI", sans-serif;
-    }
-    [hidden] { display: none !important; }
-  </style>
-
-
-  <link rel="preconnect" href="https://api.github.com">
-  <link rel="preconnect" href="https://raw.githubusercontent.com">
-  <link rel="preconnect" href="https://opengraph.githubassets.com">
-  <link rel="icon" type="image/png" href="https://github.com/argyrios-dev.png">
-
-  <script>
-    tailwind = {
-      config: {
-        darkMode: "class",
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: [
-                "Inter",
-                "-apple-system",
-                "BlinkMacSystemFont",
-                "SF Pro Display",
-                "SF Pro Text",
-                "Segoe UI",
-                "sans-serif"
-              ]
-            }
-          }
-        }
-      }
-    };
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <style type="text/tailwindcss">
-
-    @layer base {
-      :root {
-        color-scheme: dark;
-      }
-
-      body {
-        @apply min-h-screen overflow-x-hidden bg-slate-950 text-slate-100 antialiased;
-      }
-
-      ::selection {
-        @apply bg-cyan-300 text-slate-950;
-      }
-
-      button,
-      a,
-      input,
-      select {
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      :focus-visible {
-        @apply outline-2 outline-offset-4 outline-cyan-300;
-      }
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 5%, rgba(94, 105, 255, 0.18), transparent 29rem),
+        radial-gradient(circle at 88% 18%, rgba(31, 190, 255, 0.12), transparent 27rem),
+        radial-gradient(circle at 55% 90%, rgba(54, 224, 151, 0.09), transparent 32rem),
+        linear-gradient(180deg, #080a12 0%, var(--bg) 44%, #030509 100%);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
     }
 
-    @layer components {
-      .glass-panel {
-        @apply border border-white/10 bg-slate-900/55 shadow-2xl shadow-black/30 backdrop-blur-xl;
+    body::after {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      content: "";
+      opacity: 0.018;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(5, 7, 13, 0.72);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .nav-inner {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .identity {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .identity img {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      background: #111722;
+      box-shadow: 0 9px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .identity-copy {
+      min-width: 0;
+      display: grid;
+    }
+
+    .identity-copy strong {
+      font-size: 16px;
+      letter-spacing: -0.025em;
+    }
+
+    .identity-copy span {
+      color: var(--muted-2);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav-links a {
+      transition: color 170ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-button {
+      padding: 10px 15px;
+      color: var(--text) !important;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .hero {
+      padding: 118px 0 90px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 26px;
+      color: #c0d7ff;
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      content: "";
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 20px rgba(103, 230, 163, 0.95);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 1040px;
+      margin: 0 auto;
+      font-size: clamp(60px, 10vw, 132px);
+      font-weight: 800;
+      letter-spacing: -0.078em;
+      line-height: 0.9;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background:
+        linear-gradient(
+          122deg,
+          #ffffff 9%,
+          #c6d8ff 42%,
+          #b8a8ff 67%,
+          #8fe9d2 96%
+        );
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 36px auto 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2.1vw, 23px);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-actions {
+      margin-top: 38px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 13px;
+    }
+
+    .button {
+      min-height: 52px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-weight: 740;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      color: #07101e;
+      border-color: transparent;
+      background:
+        linear-gradient(135deg, #e9f3ff, #8fc3ff 50%, #8ae8c2);
+      box-shadow: 0 16px 40px rgba(83, 151, 255, 0.23);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .manual-note {
+      width: fit-content;
+      max-width: 100%;
+      margin: 56px auto 0;
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #cdd3df;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.034);
+      font-size: 13px;
+    }
+
+    .manual-note span {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 17px rgba(114, 219, 255, 0.9);
+    }
+
+    .hero-stats {
+      max-width: 820px;
+      margin: 66px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.027);
+    }
+
+    .stat {
+      padding: 25px 18px;
+      display: grid;
+      border-right: 1px solid var(--line);
+    }
+
+    .stat:last-child {
+      border-right: 0;
+    }
+
+    .stat strong {
+      font-size: 25px;
+      letter-spacing: -0.045em;
+    }
+
+    .stat span {
+      color: var(--muted-2);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    main {
+      padding-bottom: 110px;
+    }
+
+    .projects-section {
+      padding: 90px 0 40px;
+    }
+
+    .section-label {
+      margin-bottom: 16px;
+      color: #a8caff;
+      font-size: 12px;
+      font-weight: 810;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(43px, 6vw, 76px);
+      font-weight: 780;
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    .section-copy {
+      max-width: 680px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .projects-grid {
+      margin-top: 54px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      position: relative;
+      isolation: isolate;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.071),
+          rgba(255, 255, 255, 0.025)
+        );
+      box-shadow: 0 22px 72px rgba(0, 0, 0, 0.2);
+      transition:
+        transform 230ms ease,
+        border-color 230ms ease,
+        box-shadow 230ms ease;
+    }
+
+    .project-card::before {
+      position: absolute;
+      inset: -1px;
+      z-index: -1;
+      content: "";
+      border-radius: inherit;
+      opacity: 0;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(155, 140, 255, 0.65),
+          rgba(114, 219, 255, 0.55),
+          rgba(103, 230, 163, 0.38)
+        );
+      filter: blur(10px);
+      transition: opacity 230ms ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-7px);
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .project-card:hover::before {
+      opacity: 0.65;
+    }
+
+    .project-image-link {
+      position: relative;
+      aspect-ratio: 1.91 / 1;
+      overflow: hidden;
+      display: block;
+      border-bottom: 1px solid var(--line);
+      background: #101622;
+    }
+
+    .project-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 520ms cubic-bezier(0.2, 0.75, 0.25, 1);
+    }
+
+    .project-card:hover .project-image {
+      transform: scale(1.035);
+    }
+
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          180deg,
+          transparent 45%,
+          rgba(5, 7, 13, 0.78) 100%
+        );
+    }
+
+    .project-icon {
+      position: absolute;
+      left: 20px;
+      bottom: 18px;
+      width: 62px;
+      height: 62px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      background: #0d1320;
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.42);
+    }
+
+    .project-state {
+      position: absolute;
+      top: 17px;
+      left: 17px;
+      padding: 7px 10px;
+      color: #f5f8fc;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(5, 7, 13, 0.68);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-size: 10px;
+      font-weight: 790;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .project-content {
+      padding: 29px;
+    }
+
+    .project-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .repo-owner {
+      color: var(--muted-2);
+      font-size: 11px;
+      font-weight: 720;
+      letter-spacing: 0.06em;
+    }
+
+    .project-heading h3 {
+      margin: 3px 0 0;
+      font-size: 30px;
+      font-weight: 780;
+      line-height: 1.05;
+      letter-spacing: -0.048em;
+    }
+
+    .project-arrow {
+      color: #aed4ff;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .project-description {
+      min-height: 78px;
+      margin: 16px 0 22px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 25px;
+    }
+
+    .tag {
+      padding: 7px 10px;
+      color: #bdc5d2;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.034);
+      font-size: 11px;
+      font-weight: 680;
+    }
+
+    .project-actions {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .project-action {
+      min-height: 44px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 740;
+      text-align: center;
+      transition:
+        transform 170ms ease,
+        border-color 170ms ease,
+        background 170ms ease;
+    }
+
+    .project-action:hover {
+      transform: translateY(-1px);
+      border-color: var(--line-strong);
+    }
+
+    .project-action-primary {
+      color: #07101e;
+      border-color: transparent;
+      background:
+        linear-gradient(135deg, #e8f3ff, #91c5ff 55%, #8ce9c4);
+    }
+
+    .project-action-secondary {
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .principles {
+      margin-top: 120px;
+      padding: 68px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: end;
+      gap: 62px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 91% 12%, rgba(155, 140, 255, 0.2), transparent 36%),
+        radial-gradient(circle at 7% 90%, rgba(114, 219, 255, 0.13), transparent 34%),
+        rgba(255, 255, 255, 0.028);
+      box-shadow: var(--shadow);
+    }
+
+    .principles-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .principle {
+      padding: 19px 20px;
+      display: grid;
+      grid-template-columns: 39px 1fr;
+      gap: 13px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: rgba(2, 5, 10, 0.34);
+    }
+
+    .principle > span {
+      color: #a9cbff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .principle h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .principle p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .contact {
+      margin-top: 120px;
+      padding: 112px 28px;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 40px;
+      background:
+        radial-gradient(circle at 50% 8%, rgba(93, 147, 255, 0.2), transparent 43%),
+        rgba(255, 255, 255, 0.024);
+    }
+
+    .contact p {
+      max-width: 650px;
+      margin: 24px auto 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    footer {
+      padding: 57px 0 38px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-top {
+      padding-bottom: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .footer-title {
+      color: var(--text);
+      font-size: 28px;
+      font-weight: 770;
+      letter-spacing: -0.04em;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    .footer-bottom {
+      padding-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      color: var(--muted-2);
+      font-size: 10px;
+      font-weight: 690;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 650ms ease,
+        transform 650ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 940px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
       }
 
-      .neon-border {
-        position: relative;
+      .principles {
+        padding: 46px 29px;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(calc(100% - 24px), var(--max));
       }
 
-      .neon-border::before {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        z-index: -1;
-        border-radius: inherit;
-        background:
-          linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.65),
-            rgba(34, 211, 238, 0.55),
-            rgba(16, 185, 129, 0.45)
-          );
-        opacity: 0;
-        filter: blur(8px);
-        transition: opacity 250ms ease;
+      .nav-links a:not(.nav-button) {
+        display: none;
       }
 
-      .neon-border:hover::before {
-        opacity: 0.85;
+      .identity-copy span {
+        display: none;
       }
 
-      .project-card {
-        @apply glass-panel neon-border group relative isolate overflow-hidden rounded-3xl transition duration-300 ease-out;
+      .hero {
+        padding-top: 82px;
       }
 
-      .project-card:hover {
-        @apply -translate-y-2 scale-[1.015] border-cyan-300/35 shadow-cyan-950/40;
+      h1 {
+        font-size: clamp(56px, 19vw, 87px);
       }
 
-      .primary-button {
-        @apply inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-violet-500 via-cyan-400 to-emerald-400 px-6 font-bold text-slate-950 shadow-lg shadow-cyan-950/40 transition duration-200 hover:-translate-y-0.5 hover:brightness-110;
+      .hero-stats {
+        grid-template-columns: 1fr;
       }
 
-      .secondary-button {
-        @apply inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-white/10;
+      .stat {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
       }
 
-      .tag {
-        @apply inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-semibold text-slate-300;
+      .stat:last-child {
+        border-bottom: 0;
       }
 
-      .skeleton {
-        @apply animate-pulse rounded-3xl border border-white/10 bg-slate-900/65;
+      .project-actions {
+        grid-template-columns: 1fr;
       }
 
-      .stat-card {
-        @apply border-r border-white/10 px-5 py-5 text-center last:border-r-0;
-      }
-
-      .filter-button {
-        @apply rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white;
-      }
-
-      .filter-button[aria-pressed="true"] {
-        @apply border-cyan-300/50 bg-cyan-300/15 text-cyan-100;
+      .footer-top,
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
       *,
       *::before,
       *::after {
-        scroll-behavior: auto !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
-    }
-  </style>
 
-  <style>
-    .noise-layer {
-      background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.78'/%3E%3C/svg%3E");
-    }
-
-    .project-preview {
-      transition: transform 550ms cubic-bezier(.2, .75, .25, 1);
-    }
-
-    .project-card:hover .project-preview {
-      transform: scale(1.045);
-    }
-
-    .line-clamp-2 {
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
-
-    .line-clamp-3 {
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="pointer-events-none fixed inset-0 -z-30 bg-slate-950"></div>
-  <div
-    class="pointer-events-none fixed left-[-18rem] top-[-12rem] -z-20 h-[44rem] w-[44rem] rounded-full bg-violet-600/20 blur-[130px]"
-  ></div>
-  <div
-    class="pointer-events-none fixed right-[-20rem] top-[14rem] -z-20 h-[46rem] w-[46rem] rounded-full bg-cyan-500/15 blur-[140px]"
-  ></div>
-  <div
-    class="pointer-events-none fixed bottom-[-25rem] left-[30%] -z-20 h-[45rem] w-[45rem] rounded-full bg-emerald-500/10 blur-[150px]"
-  ></div>
-  <div class="noise-layer pointer-events-none fixed inset-0 z-50 opacity-[0.018]"></div>
-
-  <nav
-    class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/70 backdrop-blur-2xl"
-    aria-label="Main navigation"
-  >
-    <div class="mx-auto flex min-h-[4.5rem] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-      <a href="#top" class="flex min-w-0 items-center gap-3" aria-label="Go to the top">
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="identity" href="#top" aria-label="Volver al inicio">
         <img
           src="https://github.com/argyrios-dev.png"
           alt=""
-          class="h-10 w-10 rounded-full border border-white/15 bg-slate-900 object-cover shadow-lg shadow-black/40"
-          width="40"
-          height="40"
+          width="42"
+          height="42"
         >
-        <span class="min-w-0">
-          <strong class="block truncate text-sm font-bold tracking-tight text-white">
-            argyrios-dev
-          </strong>
-          <span class="block truncate text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-            Independent developer
-          </span>
+        <span class="identity-copy">
+          <strong>argyrios-dev</strong>
+          <span>Desarrollador independiente</span>
         </span>
       </a>
 
-      <div class="flex items-center gap-5 text-sm font-semibold text-slate-400">
-        <a href="#projects" class="hidden transition hover:text-white sm:inline">Projects</a>
-        <a href="#about" class="hidden transition hover:text-white sm:inline">About</a>
+      <div class="nav-links">
+        <a href="#proyectos">Proyectos</a>
+        <a href="#principios">Principios</a>
         <a
+          class="nav-button"
           href="https://github.com/argyrios-dev"
           target="_blank"
           rel="noreferrer"
-          class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white transition hover:border-cyan-300/40 hover:bg-white/10"
         >GitHub ↗</a>
       </div>
     </div>
   </nav>
 
-  <header id="top" class="mx-auto max-w-7xl px-4 pb-20 pt-24 text-center sm:px-6 sm:pt-32 lg:px-8">
-    <div
-      class="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/8 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-cyan-100"
-    >
-      <span class="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,.95)]"></span>
-      Live from GitHub
-    </div>
+  <header id="top" class="hero container">
+    <div class="eyebrow">Software nativo para macOS</div>
 
-    <h1
-      class="mx-auto max-w-5xl bg-gradient-to-r from-violet-300 via-cyan-200 to-emerald-300 bg-clip-text text-6xl font-black leading-[0.92] tracking-[-0.065em] text-transparent sm:text-8xl lg:text-[8.2rem]"
-    >
-      Projects that<br>update themselves.
+    <h1>
+      <span class="gradient-text">Pocas apps.<br>Un propósito claro.</span>
     </h1>
 
-    <p class="mx-auto mt-8 max-w-3xl text-lg leading-8 text-slate-400 sm:text-xl">
-      A fully automated collection of public repositories by
-      <strong class="font-semibold text-slate-200">argyrios-dev</strong>.
-      Create a new public repository and it appears here automatically.
+    <p class="hero-copy">
+      Aplicaciones nativas, privadas y de código abierto creadas por
+      <strong>argyrios-dev</strong> para resolver problemas concretos en macOS.
     </p>
 
-    <div class="mt-10 flex flex-wrap justify-center gap-3">
-      <a href="#projects" class="primary-button">Explore projects ↓</a>
+    <div class="hero-actions">
+      <a class="button button-primary" href="#proyectos">
+        Ver proyectos ↓
+      </a>
       <a
-        href="https://github.com/argyrios-dev?tab=repositories"
+        class="button button-secondary"
+        href="https://github.com/argyrios-dev"
         target="_blank"
         rel="noreferrer"
-        class="secondary-button"
-      >View all repositories ↗</a>
+      >Abrir GitHub ↗</a>
     </div>
 
-    <div class="glass-panel mx-auto mt-16 grid max-w-4xl grid-cols-2 overflow-hidden rounded-3xl sm:grid-cols-4">
-      <div class="stat-card border-b border-white/10 sm:border-b-0">
-        <strong id="repositoryCount" class="block text-2xl font-black tracking-tight text-white">—</strong>
-        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-          Public projects
-        </span>
+    <div class="manual-note">
+      <span></span>
+      Portafolio manual, rápido y sin límites de API.
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <strong>2</strong>
+        <span>Proyectos publicados</span>
       </div>
-      <div class="stat-card border-b border-r-0 border-white/10 sm:border-b-0 sm:border-r">
-        <strong id="websiteCount" class="block text-2xl font-black tracking-tight text-white">—</strong>
-        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-          Live websites
-        </span>
+      <div class="stat">
+        <strong>Swift</strong>
+        <span>Tecnología principal</span>
       </div>
-      <div class="stat-card">
-        <strong id="starCount" class="block text-2xl font-black tracking-tight text-white">—</strong>
-        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-          Total stars
-        </span>
-      </div>
-      <div class="stat-card border-r-0">
-        <strong id="refreshDate" class="block text-2xl font-black tracking-tight text-white">Live</strong>
-        <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-          Portfolio index
-        </span>
+      <div class="stat">
+        <strong>100 %</strong>
+        <span>Enfoque local</span>
       </div>
     </div>
   </header>
 
   <main>
-    <section id="projects" class="mx-auto max-w-7xl scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8">
-      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p class="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">
-            Published work
-          </p>
-          <h2 class="mt-4 text-4xl font-black tracking-[-0.045em] text-white sm:text-6xl">
-            Everything public.<br>Always current.
-          </h2>
-          <p class="mt-5 max-w-2xl text-base leading-7 text-slate-400">
-            Repository metadata and preview images are discovered directly from GitHub.
-            No project card is maintained by hand.
-          </p>
-        </div>
+    <section id="proyectos" class="projects-section container">
+      <div class="section-label">Proyectos seleccionados</div>
+      <h2>Software con identidad propia.</h2>
+      <p class="section-copy">
+        Cada proyecto tiene su propia web, repositorio público y página de
+        releases. Las tarjetas son manuales para mantener el control total
+        sobre la presentación.
+      </p>
 
-        <label class="relative block w-full lg:max-w-sm">
-          <span class="sr-only">Search projects</span>
-          <input
-            id="searchInput"
-            type="search"
-            autocomplete="off"
-            placeholder="Search repositories..."
-            class="h-[3.25rem] w-full rounded-2xl border border-white/10 bg-slate-900/70 pl-5 pr-12 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300/50 focus:ring-4 focus:ring-cyan-300/10"
+      <div class="projects-grid">
+        <article class="project-card reveal">
+          <a
+            class="project-image-link"
+            href="https://argyrios-dev.github.io/BridgeLock/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Abrir la web de BridgeLock"
           >
-          <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">
-            ⌕
-          </span>
-        </label>
-      </div>
+            <img
+              class="project-image"
+              src="https://raw.githubusercontent.com/argyrios-dev/BridgeLock/main/IntroREADME.png"
+              alt="Vista previa de BridgeLock"
+              loading="eager"
+            >
+            <span class="image-overlay"></span>
+            <span class="project-state">Disponible</span>
+            <img
+              class="project-icon"
+              src="https://raw.githubusercontent.com/argyrios-dev/BridgeLock/main/AppIcon.png"
+              alt=""
+              width="62"
+              height="62"
+            >
+          </a>
 
-      <div class="mt-8 flex flex-wrap gap-2" aria-label="Project filters">
-        <button type="button" class="filter-button" data-filter="all" aria-pressed="true">
-          All
-        </button>
-        <button type="button" class="filter-button" data-filter="website" aria-pressed="false">
-          With website
-        </button>
-        <button type="button" class="filter-button" data-filter="swift" aria-pressed="false">
-          Swift
-        </button>
-        <button type="button" class="filter-button" data-filter="recent" aria-pressed="false">
-          Recently updated
-        </button>
+          <div class="project-content">
+            <div class="project-heading">
+              <div>
+                <span class="repo-owner">argyrios-dev /</span>
+                <h3>BridgeLock</h3>
+              </div>
+              <span class="project-arrow">↗</span>
+            </div>
 
-        <label class="ml-auto hidden sm:block">
-          <span class="sr-only">Sort repositories</span>
-          <select
-            id="sortSelect"
-            class="rounded-full border border-white/10 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-300 outline-none transition focus:border-cyan-300/50"
+            <p class="project-description">
+              Control de acceso para escritorios virtuales de macOS. Protege un
+              Space concreto con PIN o Touch ID sin bloquear todo el Mac.
+            </p>
+
+            <div class="tags">
+              <span class="tag">Swift</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Touch ID</span>
+              <span class="tag">Keychain</span>
+              <span class="tag">MPL-2.0</span>
+            </div>
+
+            <div class="project-actions">
+              <a
+                class="project-action project-action-primary"
+                href="https://argyrios-dev.github.io/BridgeLock/"
+                target="_blank"
+                rel="noreferrer"
+              >Abrir web ↗</a>
+              <a
+                class="project-action project-action-secondary"
+                href="https://github.com/argyrios-dev/BridgeLock"
+                target="_blank"
+                rel="noreferrer"
+              >Código ↗</a>
+              <a
+                class="project-action project-action-secondary"
+                href="https://github.com/argyrios-dev/BridgeLock/releases/latest"
+                target="_blank"
+                rel="noreferrer"
+              >Releases ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <a
+            class="project-image-link"
+            href="https://argyrios-dev.github.io/AirControll/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Abrir la web de AirControll"
           >
-            <option value="updated">Recently updated</option>
-            <option value="created">Recently created</option>
-            <option value="stars">Most starred</option>
-            <option value="name">Name</option>
-          </select>
-        </label>
-      </div>
+            <img
+              class="project-image"
+              src="https://raw.githubusercontent.com/argyrios-dev/AirControll/main/IntroREADME.png"
+              alt="Vista previa de AirControll"
+              loading="eager"
+            >
+            <span class="image-overlay"></span>
+            <span class="project-state">Disponible</span>
+            <img
+              class="project-icon"
+              src="https://raw.githubusercontent.com/argyrios-dev/AirControll/main/Assets/AirControllIcon.png"
+              alt=""
+              width="62"
+              height="62"
+            >
+          </a>
 
-      <p id="resultsSummary" class="mt-5 text-sm text-slate-500" hidden></p>
+          <div class="project-content">
+            <div class="project-heading">
+              <div>
+                <span class="repo-owner">argyrios-dev /</span>
+                <h3>AirControll</h3>
+              </div>
+              <span class="project-arrow">↗</span>
+            </div>
 
-      <div
-        id="projectsGrid"
-        class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
-        aria-live="polite"
-      >
-        <div class="skeleton h-[31rem]"></div>
-        <div class="skeleton hidden h-[31rem] md:block"></div>
-        <div class="skeleton hidden h-[31rem] xl:block"></div>
-        <div class="skeleton h-[31rem]"></div>
-        <div class="skeleton hidden h-[31rem] md:block"></div>
-        <div class="skeleton hidden h-[31rem] xl:block"></div>
-      </div>
+            <p class="project-description">
+              Controla acciones de macOS mediante gestos de la mano con Apple
+              Vision y AVFoundation. Reconocimiento local, privado y sin nube.
+            </p>
 
-      <div id="loadMoreContainer" class="mt-10 text-center" hidden>
-        <button id="loadMoreButton" type="button" class="secondary-button">
-          Show more projects
-        </button>
+            <div class="tags">
+              <span class="tag">Swift</span>
+              <span class="tag">Vision</span>
+              <span class="tag">AVFoundation</span>
+              <span class="tag">Offline</span>
+              <span class="tag">MPL-2.0</span>
+            </div>
+
+            <div class="project-actions">
+              <a
+                class="project-action project-action-primary"
+                href="https://argyrios-dev.github.io/AirControll/"
+                target="_blank"
+                rel="noreferrer"
+              >Abrir web ↗</a>
+              <a
+                class="project-action project-action-secondary"
+                href="https://github.com/argyrios-dev/AirControll"
+                target="_blank"
+                rel="noreferrer"
+              >Código ↗</a>
+              <a
+                class="project-action project-action-secondary"
+                href="https://github.com/argyrios-dev/AirControll/releases/latest"
+                target="_blank"
+                rel="noreferrer"
+              >Releases ↗</a>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="about" class="mx-auto max-w-7xl scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8">
-      <div class="glass-panel overflow-hidden rounded-[2rem] p-8 sm:p-12 lg:p-16">
-        <div class="grid items-end gap-12 lg:grid-cols-[1.05fr_.95fr]">
+    <section id="principios" class="principles container reveal">
+      <div>
+        <div class="section-label">Cómo desarrollo</div>
+        <h2>Nativo, privado y sin ruido.</h2>
+        <p class="section-copy">
+          Cada aplicación intenta hacer una sola cosa bien, respetar el sistema
+          y reducir al mínimo la recogida de datos.
+        </p>
+      </div>
+
+      <div class="principles-list">
+        <article class="principle">
+          <span>01</span>
           <div>
-            <p class="text-xs font-black uppercase tracking-[0.2em] text-emerald-300">
-              How I build
-            </p>
-            <h2 class="mt-4 text-4xl font-black tracking-[-0.045em] text-white sm:text-6xl">
-              Native, focused<br>and respectful.
-            </h2>
-            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400">
-              Software should solve a real problem, feel at home on its platform
-              and collect no more data than it genuinely needs.
+            <h3>Diseñado para macOS</h3>
+            <p>
+              Interfaces y comportamientos integrados con las tecnologías de Apple.
             </p>
           </div>
+        </article>
 
-          <div class="space-y-3">
-            <article class="rounded-2xl border border-white/10 bg-black/20 p-5">
-              <p class="text-xs font-black uppercase tracking-[0.16em] text-violet-300">01</p>
-              <h3 class="mt-2 text-lg font-bold text-white">Native first</h3>
-              <p class="mt-1 text-sm leading-6 text-slate-400">
-                Built for the platform instead of merely running on it.
-              </p>
-            </article>
-            <article class="rounded-2xl border border-white/10 bg-black/20 p-5">
-              <p class="text-xs font-black uppercase tracking-[0.16em] text-cyan-300">02</p>
-              <h3 class="mt-2 text-lg font-bold text-white">Privacy by architecture</h3>
-              <p class="mt-1 text-sm leading-6 text-slate-400">
-                Local processing and minimal data collection whenever possible.
-              </p>
-            </article>
-            <article class="rounded-2xl border border-white/10 bg-black/20 p-5">
-              <p class="text-xs font-black uppercase tracking-[0.16em] text-emerald-300">03</p>
-              <h3 class="mt-2 text-lg font-bold text-white">Open source</h3>
-              <p class="mt-1 text-sm leading-6 text-slate-400">
-                Readable code, transparent behavior and public issue tracking.
-              </p>
-            </article>
+        <article class="principle">
+          <span>02</span>
+          <div>
+            <h3>Privacidad estructural</h3>
+            <p>
+              Procesamiento local y ausencia de servicios remotos siempre que sea posible.
+            </p>
           </div>
-        </div>
+        </article>
+
+        <article class="principle">
+          <span>03</span>
+          <div>
+            <h3>Código abierto</h3>
+            <p>
+              Repositorios públicos, comportamiento revisable e incidencias transparentes.
+            </p>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <div
-        class="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-violet-500/15 via-cyan-500/8 to-emerald-500/10 px-6 py-20 text-center shadow-2xl shadow-black/30 sm:px-12"
-      >
-        <p class="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">
-          Zero manual maintenance
-        </p>
-        <h2 class="mx-auto mt-4 max-w-4xl text-5xl font-black tracking-[-0.055em] text-white sm:text-7xl">
-          Publish on GitHub.<br>The portfolio follows.
-        </h2>
-        <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-400">
-          New public repositories automatically become new cards the next time this page refreshes.
-        </p>
-        <div class="mt-9 flex flex-wrap justify-center gap-3">
-          <a
-            href="https://github.com/new"
-            target="_blank"
-            rel="noreferrer"
-            class="primary-button"
-          >Create a repository ↗</a>
-          <a
-            href="https://github.com/argyrios-dev"
-            target="_blank"
-            rel="noreferrer"
-            class="secondary-button"
-          >Open GitHub profile ↗</a>
-        </div>
+    <section class="contact container reveal">
+      <div class="section-label">Nuevos proyectos</div>
+      <h2>Una colección pequeña,<br>pero en crecimiento.</h2>
+      <p>
+        Cuando exista un nuevo proyecto, se añade manualmente para elegir su
+        miniatura, descripción, enlaces y presentación exacta.
+      </p>
+
+      <div class="hero-actions">
+        <a
+          class="button button-primary"
+          href="https://github.com/argyrios-dev?tab=repositories"
+          target="_blank"
+          rel="noreferrer"
+        >Ver repositorios ↗</a>
+        <a
+          class="button button-secondary"
+          href="https://github.com/argyrios-dev"
+          target="_blank"
+          rel="noreferrer"
+        >Perfil de GitHub ↗</a>
       </div>
     </section>
   </main>
 
-  <footer class="border-t border-white/10 py-10">
-    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 text-sm text-slate-500 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8">
-      <div>
-        <strong class="block text-xl font-black tracking-tight text-white">argyrios-dev</strong>
-        <span>Native apps, open-source tools and privacy-first software.</span>
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-title">argyrios-dev</div>
+          <div>Aplicaciones nativas y privadas para macOS.</div>
+        </div>
+
+        <div class="footer-links">
+          <a
+            href="https://github.com/argyrios-dev"
+            target="_blank"
+            rel="noreferrer"
+          >GitHub</a>
+          <a
+            href="https://github.com/argyrios-dev/BridgeLock"
+            target="_blank"
+            rel="noreferrer"
+          >BridgeLock</a>
+          <a
+            href="https://github.com/argyrios-dev/AirControll"
+            target="_blank"
+            rel="noreferrer"
+          >AirControll</a>
+        </div>
       </div>
 
-      <div class="flex flex-wrap gap-5">
-        <a class="transition hover:text-white" href="https://github.com/argyrios-dev" target="_blank" rel="noreferrer">
-          GitHub
-        </a>
-        <a class="transition hover:text-white" href="https://github.com/argyrios-dev?tab=repositories" target="_blank" rel="noreferrer">
-          Repositories
-        </a>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> argyrios-dev</span>
+        <span>Creado para macOS · Sin API · Sin seguimiento</span>
       </div>
-    </div>
-
-    <div class="mx-auto mt-8 flex max-w-7xl flex-col gap-2 border-t border-white/10 px-4 pt-6 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600 sm:px-6 md:flex-row md:justify-between lg:px-8">
-      <span>© <span id="currentYear"></span> argyrios-dev</span>
-      <span>Repository data loaded automatically from GitHub</span>
     </div>
   </footer>
-
-  <template id="projectCardTemplate">
-    <article class="project-card flex min-h-[31rem] flex-col">
-      <a
-        class="project-primary-link relative block aspect-[16/9] overflow-hidden border-b border-white/10 bg-slate-900"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img class="project-preview absolute inset-0 h-full w-full object-cover" alt="" loading="lazy">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent"></div>
-        <div class="absolute left-4 top-4 flex flex-wrap gap-2">
-          <span class="project-status rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white backdrop-blur-xl"></span>
-        </div>
-        <span class="project-language absolute right-4 top-4 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white backdrop-blur-xl"></span>
-      </a>
-
-      <div class="flex flex-1 flex-col p-6">
-        <div class="flex items-start justify-between gap-4">
-          <div class="min-w-0">
-            <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600">
-              argyrios-dev /
-            </p>
-            <h3 class="project-name mt-1 truncate text-2xl font-black tracking-[-0.04em] text-white"></h3>
-          </div>
-          <span class="text-xl text-cyan-200">↗</span>
-        </div>
-
-        <p class="project-description line-clamp-3 mt-4 min-h-[4.5rem] text-sm leading-6 text-slate-400"></p>
-
-        <div class="project-metrics mt-4 flex flex-wrap gap-4 text-xs font-semibold text-slate-500">
-          <span class="project-stars"></span>
-          <span class="project-forks"></span>
-          <span class="project-updated"></span>
-        </div>
-
-        <div class="project-topics mt-5 flex min-h-7 flex-wrap gap-2"></div>
-
-        <div class="mt-auto flex gap-2 pt-6">
-          <a
-            class="project-view flex min-h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-violet-400 via-cyan-300 to-emerald-300 px-4 text-center text-sm font-black text-slate-950 transition hover:brightness-110"
-            target="_blank"
-            rel="noreferrer"
-          >View Project ↗</a>
-          <a
-            class="project-code flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-bold text-white transition hover:border-cyan-300/40 hover:bg-white/10"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="View source code"
-          >Code</a>
-        </div>
-      </div>
-    </article>
-  </template>
 
   <script>
     "use strict";
 
-    const CONFIG = Object.freeze({
-      username: "argyrios-dev",
-      excludedRepository: "argyrios-dev.github.io",
-      projectsDataURL: "./projects.json",
-      initialCards: 9,
-      cardsPerLoad: 9,
-      previewCacheKey: "argyrios-dev:readme-previews:v2",
-      previewCacheDuration: 24 * 60 * 60 * 1000,
-      previewConcurrency: 4
-    });
+    document.getElementById("year").textContent =
+      String(new Date().getFullYear());
 
-    const state = {
-      repositories: [],
-      query: "",
-      filter: "all",
-      sort: "updated",
-      visibleCount: CONFIG.initialCards,
-      previewMemoryCache: new Map(),
-      previewQueue: [],
-      activePreviewWorkers: 0
-    };
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    const elements = {
-      repositoryCount: document.getElementById("repositoryCount"),
-      websiteCount: document.getElementById("websiteCount"),
-      starCount: document.getElementById("starCount"),
-      refreshDate: document.getElementById("refreshDate"),
-      searchInput: document.getElementById("searchInput"),
-      sortSelect: document.getElementById("sortSelect"),
-      filterButtons: [...document.querySelectorAll("[data-filter]")],
-      resultsSummary: document.getElementById("resultsSummary"),
-      projectsGrid: document.getElementById("projectsGrid"),
-      loadMoreContainer: document.getElementById("loadMoreContainer"),
-      loadMoreButton: document.getElementById("loadMoreButton"),
-      cardTemplate: document.getElementById("projectCardTemplate"),
-      currentYear: document.getElementById("currentYear")
-    };
-
-    elements.currentYear.textContent = String(new Date().getFullYear());
-
-    function isValidHTTPURL(value) {
-      if (typeof value !== "string" || value.trim() === "") {
-        return false;
-      }
-
-      try {
-        const url = new URL(value);
-        return url.protocol === "http:" || url.protocol === "https:";
-      } catch {
-        return false;
-      }
-    }
-
-    function encodeGitHubPath(value) {
-      return String(value)
-        .split("/")
-        .map((segment) => encodeURIComponent(segment))
-        .join("/");
-    }
-
-    function projectURL(repository) {
-      if (repository.has_pages === true) {
-        if (
-          repository.name.toLowerCase() ===
-          `${CONFIG.username}.github.io`.toLowerCase()
-        ) {
-          return `https://${CONFIG.username}.github.io/`;
-        }
-
-        return (
-          `https://${CONFIG.username}.github.io/` +
-          `${encodeURIComponent(repository.name)}/`
-        );
-      }
-
-      if (isValidHTTPURL(repository.homepage)) {
-        return repository.homepage.trim();
-      }
-
-      return repository.html_url;
-    }
-
-    function hasExternalProject(repository) {
-      return (
-        repository.has_pages === true ||
-        isValidHTTPURL(repository.homepage)
-      );
-    }
-
-    function rawReadmeURL(repository, fileName = "README.md") {
-      const branch = encodeGitHubPath(repository.default_branch || "main");
-
-      return (
-        `https://raw.githubusercontent.com/` +
-        `${encodeURIComponent(CONFIG.username)}/` +
-        `${encodeURIComponent(repository.name)}/` +
-        `${branch}/${encodeGitHubPath(fileName)}`
-      );
-    }
-
-    function fallbackPreviewDataURL(repository) {
-      const language = repository.language || "Open Source";
-      const safeName = escapeXML(repository.name);
-      const safeLanguage = escapeXML(language);
-
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-          <defs>
-            <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#0f172a"/>
-              <stop offset=".48" stop-color="#111827"/>
-              <stop offset="1" stop-color="#020617"/>
-            </linearGradient>
-            <radialGradient id="violet" cx="0" cy="0" r="1" gradientTransform="translate(230 120) rotate(38) scale(520)">
-              <stop stop-color="#8b5cf6" stop-opacity=".55"/>
-              <stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="cyan" cx="0" cy="0" r="1" gradientTransform="translate(1080 580) rotate(-145) scale(520)">
-              <stop stop-color="#22d3ee" stop-opacity=".4"/>
-              <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
-            </radialGradient>
-            <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
-              <path d="M42 0H0V42" fill="none" stroke="#fff" stroke-opacity=".045"/>
-            </pattern>
-          </defs>
-          <rect width="1280" height="720" fill="url(#background)"/>
-          <rect width="1280" height="720" fill="url(#violet)"/>
-          <rect width="1280" height="720" fill="url(#cyan)"/>
-          <rect width="1280" height="720" fill="url(#grid)"/>
-          <g transform="translate(84 84)">
-            <rect width="1112" height="552" rx="38" fill="#020617" fill-opacity=".36" stroke="#fff" stroke-opacity=".11"/>
-            <circle cx="76" cy="76" r="11" fill="#a78bfa"/>
-            <circle cx="110" cy="76" r="11" fill="#67e8f9"/>
-            <circle cx="144" cy="76" r="11" fill="#6ee7b7"/>
-            <text x="76" y="292" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="70" font-weight="800">${safeName}</text>
-            <text x="79" y="362" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="30">${safeLanguage} · github.com/${CONFIG.username}</text>
-            <path d="M78 432H450" stroke="#67e8f9" stroke-width="6" stroke-linecap="round" opacity=".85"/>
-          </g>
-        </svg>
-      `;
-
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    }
-
-    function escapeXML(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&apos;");
-    }
-
-    function formatCompactNumber(value) {
-      return new Intl.NumberFormat("en", {
-        notation: Number(value) >= 1000 ? "compact" : "standard",
-        maximumFractionDigits: 1
-      }).format(Number(value) || 0);
-    }
-
-    function formatDate(value) {
-      const date = new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return "Unknown";
-      }
-
-      return new Intl.DateTimeFormat("en", {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      }).format(date);
-    }
-
-    function daysSince(value) {
-      const timestamp = new Date(value).getTime();
-
-      if (Number.isNaN(timestamp)) {
-        return Number.POSITIVE_INFINITY;
-      }
-
-      return (Date.now() - timestamp) / 86400000;
-    }
-
-    function readJSONCache(key, maximumAge) {
-      try {
-        const value = localStorage.getItem(key);
-
-        if (!value) {
-          return null;
-        }
-
-        const parsed = JSON.parse(value);
-
-        if (
-          !parsed ||
-          typeof parsed.savedAt !== "number" ||
-          Date.now() - parsed.savedAt > maximumAge
-        ) {
-          return null;
-        }
-
-        return parsed.data;
-      } catch {
-        return null;
-      }
-    }
-
-    function writeJSONCache(key, data) {
-      try {
-        localStorage.setItem(
-          key,
-          JSON.stringify({
-            savedAt: Date.now(),
-            data
-          })
-        );
-      } catch {
-        // The portfolio still works when browser storage is unavailable.
-      }
-    }
-
-    function loadPreviewCache() {
-      const cached = readJSONCache(
-        CONFIG.previewCacheKey,
-        CONFIG.previewCacheDuration
-      );
-
-      if (!cached || typeof cached !== "object") {
-        return;
-      }
-
-      Object.entries(cached).forEach(([repositoryName, url]) => {
-        if (typeof url === "string") {
-          state.previewMemoryCache.set(repositoryName, url);
-        }
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      document.querySelectorAll(".reveal").forEach((element) => {
+        element.classList.add("visible");
       });
-    }
-
-    function savePreviewCache() {
-      writeJSONCache(
-        CONFIG.previewCacheKey,
-        Object.fromEntries(state.previewMemoryCache)
-      );
-    }
-
-    async function fetchGeneratedProjects() {
-      const response = await fetch(
-        `${CONFIG.projectsDataURL}?v=${Date.now()}`,
-        {
-          cache: "no-store",
-          headers: {
-            Accept: "application/json"
-          }
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `projects.json request failed with status ${response.status}.`
-        );
-      }
-
-      const payload = await response.json();
-
-      if (
-        !payload ||
-        !Array.isArray(payload.repositories)
-      ) {
-        throw new Error("projects.json has an invalid format.");
-      }
-
-      return payload;
-    }
-
-    function extractFirstReadmeImage(markdown) {
-      const matches = [];
-
-      const markdownPattern =
-        /!\[[^\]]*]\(\s*<?([^)\s>]+)(?:\s+["'][^"']*["'])?>?\s*\)/gi;
-
-      const htmlPattern =
-        /<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi;
-
-      let match;
-
-      while ((match = markdownPattern.exec(markdown)) !== null) {
-        matches.push({
-          index: match.index,
-          source: match[1]
-        });
-      }
-
-      while ((match = htmlPattern.exec(markdown)) !== null) {
-        matches.push({
-          index: match.index,
-          source: match[1]
-        });
-      }
-
-      matches.sort((left, right) => left.index - right.index);
-
-      return matches.length > 0 ? matches[0].source.trim() : null;
-    }
-
-    function normalizeGitHubImageURL(source, readmeURL, repository) {
-      if (!source) {
-        return null;
-      }
-
-      let value = source
-        .trim()
-        .replace(/^<|>$/g, "")
-        .replaceAll("&amp;", "&");
-
-      if (
-        value.startsWith("data:") ||
-        value.startsWith("javascript:") ||
-        value.startsWith("#")
-      ) {
-        return null;
-      }
-
-      if (value.startsWith("//")) {
-        return `https:${value}`;
-      }
-
-      if (isValidHTTPURL(value)) {
-        try {
-          const url = new URL(value);
-
-          if (
-            url.hostname === "github.com" &&
-            url.pathname.includes("/blob/")
-          ) {
-            const blobMarker = "/blob/";
-            const markerIndex = url.pathname.indexOf(blobMarker);
-            const beforeBlob = url.pathname.slice(0, markerIndex);
-            const afterBlob = url.pathname.slice(
-              markerIndex + blobMarker.length
-            );
-
-            return (
-              `https://raw.githubusercontent.com` +
-              `${beforeBlob}/${afterBlob}`
-            );
-          }
-
-          return url.href;
-        } catch {
-          return null;
-        }
-      }
-
-      try {
-        return new URL(value, readmeURL).href;
-      } catch {
-        const branch = encodeGitHubPath(
-          repository.default_branch || "main"
-        );
-
-        return (
-          `https://raw.githubusercontent.com/` +
-          `${encodeURIComponent(CONFIG.username)}/` +
-          `${encodeURIComponent(repository.name)}/` +
-          `${branch}/${value.replace(/^\.?\//, "")}`
-        );
-      }
-    }
-
-    async function fetchReadmeText(repository) {
-      const candidateNames = [
-        "README.md",
-        "Readme.md",
-        "readme.md",
-        "README.MD"
-      ];
-
-      for (const candidateName of candidateNames) {
-        const url = rawReadmeURL(repository, candidateName);
-
-        try {
-          const response = await fetch(url, {
-            cache: "force-cache"
-          });
-
-          if (response.ok) {
-            return {
-              text: await response.text(),
-              url
-            };
-          }
-        } catch {
-          // Try the next common README filename.
-        }
-      }
-
-      const endpoint =
-        `${CONFIG.apiBase}/repos/` +
-        `${encodeURIComponent(CONFIG.username)}/` +
-        `${encodeURIComponent(repository.name)}/readme`;
-
-      try {
-        const response = await fetch(endpoint, {
-          headers: {
-            Accept: "application/vnd.github.raw+json",
-            "X-GitHub-Api-Version": "2022-11-28"
-          }
-        });
-
-        if (response.ok) {
-          return {
-            text: await response.text(),
-            url: rawReadmeURL(repository)
-          };
-        }
-      } catch {
-        // The gradient placeholder is used when a README cannot be read.
-      }
-
-      return null;
-    }
-
-    async function discoverPreviewURL(repository) {
-      const cached = state.previewMemoryCache.get(repository.name);
-
-      if (cached) {
-        return cached;
-      }
-
-      const finalURL =
-        repository.preview_url ||
-        fallbackPreviewDataURL(repository);
-
-      state.previewMemoryCache.set(repository.name, finalURL);
-      savePreviewCache();
-
-      return finalURL;
-    }
-
-    function queuePreview(repository, imageElement) {
-      state.previewQueue.push({
-        repository,
-        imageElement
-      });
-
-      runPreviewWorkers();
-    }
-
-    function runPreviewWorkers() {
-      while (
-        state.activePreviewWorkers < CONFIG.previewConcurrency &&
-        state.previewQueue.length > 0
-      ) {
-        const task = state.previewQueue.shift();
-        state.activePreviewWorkers += 1;
-
-        discoverPreviewURL(task.repository)
-          .then((url) => {
-            if (!task.imageElement.isConnected) {
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
               return;
             }
 
-            task.imageElement.src = url;
-          })
-          .catch(() => {
-            if (task.imageElement.isConnected) {
-              task.imageElement.src =
-                fallbackPreviewDataURL(task.repository);
-            }
-          })
-          .finally(() => {
-            state.activePreviewWorkers -= 1;
-            runPreviewWorkers();
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
           });
-      }
-    }
-
-    function buildTag(text) {
-      const tag = document.createElement("span");
-      tag.className = "tag";
-      tag.textContent = text;
-      return tag;
-    }
-
-    function buildProjectCard(repository) {
-      const fragment = elements.cardTemplate.content.cloneNode(true);
-      const card = fragment.querySelector(".project-card");
-      const primaryLink = fragment.querySelector(
-        ".project-primary-link"
-      );
-      const image = fragment.querySelector(".project-preview");
-      const status = fragment.querySelector(".project-status");
-      const language = fragment.querySelector(".project-language");
-      const name = fragment.querySelector(".project-name");
-      const description = fragment.querySelector(
-        ".project-description"
-      );
-      const stars = fragment.querySelector(".project-stars");
-      const forks = fragment.querySelector(".project-forks");
-      const updated = fragment.querySelector(".project-updated");
-      const topics = fragment.querySelector(".project-topics");
-      const viewButton = fragment.querySelector(".project-view");
-      const codeButton = fragment.querySelector(".project-code");
-
-      const destination = projectURL(repository);
-      const websiteAvailable = hasExternalProject(repository);
-
-      card.dataset.repository = repository.name.toLowerCase();
-      primaryLink.href = destination;
-      image.src = fallbackPreviewDataURL(repository);
-      image.alt = `${repository.name} project preview`;
-      image.addEventListener(
-        "error",
-        () => {
-          image.src = fallbackPreviewDataURL(repository);
         },
-        { once: true }
-      );
-
-      status.textContent = websiteAvailable
-        ? "Website available"
-        : "Public repository";
-
-      language.textContent =
-        repository.language || "Open source";
-
-      name.textContent = repository.name;
-      description.textContent =
-        repository.description ||
-        "An open-source project by argyrios-dev.";
-
-      stars.textContent =
-        `★ ${formatCompactNumber(repository.stargazers_count)}`;
-
-      forks.textContent =
-        `⑂ ${formatCompactNumber(repository.forks_count)}`;
-
-      updated.textContent =
-        `Updated ${formatDate(
-          repository.pushed_at || repository.updated_at
-        )}`;
-
-      const repositoryTopics =
-        Array.isArray(repository.topics)
-          ? repository.topics.slice(0, 4)
-          : [];
-
-      if (repositoryTopics.length === 0) {
-        topics.append(
-          buildTag(repository.language || "project")
-        );
-      } else {
-        repositoryTopics.forEach((topic) => {
-          topics.append(buildTag(topic));
-        });
-      }
-
-      viewButton.href = destination;
-      viewButton.textContent = websiteAvailable
-        ? "View Project ↗"
-        : "Open Repository ↗";
-
-      codeButton.href = repository.html_url;
-      codeButton.setAttribute(
-        "aria-label",
-        `View ${repository.name} source code`
-      );
-
-      queuePreview(repository, image);
-
-      return fragment;
-    }
-
-    function repositorySearchText(repository) {
-      return [
-        repository.name,
-        repository.description,
-        repository.language,
-        ...(Array.isArray(repository.topics)
-          ? repository.topics
-          : [])
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-    }
-
-    function matchesFilter(repository) {
-      const queryMatches =
-        state.query === "" ||
-        repositorySearchText(repository).includes(state.query);
-
-      if (!queryMatches) {
-        return false;
-      }
-
-      switch (state.filter) {
-        case "website":
-          return hasExternalProject(repository);
-
-        case "swift":
-          return (
-            String(repository.language || "").toLowerCase() ===
-            "swift"
-          );
-
-        case "recent":
-          return (
-            daysSince(
-              repository.pushed_at || repository.updated_at
-            ) <= 90
-          );
-
-        case "all":
-        default:
-          return true;
-      }
-    }
-
-    function sortedRepositories(repositories) {
-      return [...repositories].sort((left, right) => {
-        switch (state.sort) {
-          case "created":
-            return (
-              new Date(right.created_at).getTime() -
-              new Date(left.created_at).getTime()
-            );
-
-          case "stars":
-            return (
-              Number(right.stargazers_count || 0) -
-              Number(left.stargazers_count || 0)
-            );
-
-          case "name":
-            return left.name.localeCompare(right.name, "en", {
-              sensitivity: "base"
-            });
-
-          case "updated":
-          default:
-            return (
-              new Date(
-                right.pushed_at || right.updated_at
-              ).getTime() -
-              new Date(
-                left.pushed_at || left.updated_at
-              ).getTime()
-            );
+        {
+          threshold: 0.13
         }
-      });
-    }
-
-    function visibleRepositories() {
-      return sortedRepositories(
-        state.repositories.filter(matchesFilter)
-      );
-    }
-
-    function renderEmptyState() {
-      const container = document.createElement("div");
-      container.className =
-        "glass-panel col-span-full grid min-h-72 place-items-center rounded-3xl p-10 text-center";
-
-      const content = document.createElement("div");
-      const title = document.createElement("strong");
-      const message = document.createElement("p");
-
-      title.className = "text-lg font-bold text-white";
-      title.textContent = "No matching projects.";
-
-      message.className = "mt-2 text-sm text-slate-500";
-      message.textContent =
-        "Try another search term or choose a different filter.";
-
-      content.append(title, message);
-      container.append(content);
-      elements.projectsGrid.replaceChildren(container);
-      elements.loadMoreContainer.hidden = true;
-    }
-
-    function updateResultsSummary(total) {
-      const hasSearch = state.query !== "";
-      const hasFilter = state.filter !== "all";
-
-      if (!hasSearch && !hasFilter) {
-        elements.resultsSummary.hidden = true;
-        elements.resultsSummary.textContent = "";
-        return;
-      }
-
-      elements.resultsSummary.hidden = false;
-      elements.resultsSummary.textContent =
-        `${total} matching project${total === 1 ? "" : "s"}`;
-    }
-
-    function renderProjects() {
-      state.previewQueue.length = 0;
-
-      const repositories = visibleRepositories();
-      updateResultsSummary(repositories.length);
-
-      if (repositories.length === 0) {
-        renderEmptyState();
-        return;
-      }
-
-      const displayed = repositories.slice(
-        0,
-        state.visibleCount
       );
 
-      const fragment = document.createDocumentFragment();
-
-      displayed.forEach((repository) => {
-        fragment.append(buildProjectCard(repository));
-      });
-
-      elements.projectsGrid.replaceChildren(fragment);
-
-      const remaining = repositories.length - displayed.length;
-      elements.loadMoreContainer.hidden = remaining <= 0;
-
-      if (remaining > 0) {
-        elements.loadMoreButton.textContent =
-          `Show more projects (${remaining} remaining)`;
-      }
-    }
-
-    function updateStatistics() {
-      const websites = state.repositories.filter(
-        hasExternalProject
-      ).length;
-
-      const totalStars = state.repositories.reduce(
-        (total, repository) =>
-          total + Number(repository.stargazers_count || 0),
-        0
-      );
-
-      elements.repositoryCount.textContent =
-        String(state.repositories.length);
-
-      elements.websiteCount.textContent =
-        String(websites);
-
-      elements.starCount.textContent =
-        formatCompactNumber(totalStars);
-
-      elements.refreshDate.textContent =
-        new Intl.DateTimeFormat("en", {
-          month: "short",
-          day: "numeric"
-        }).format(new Date());
-    }
-
-    function useRepositories(repositories) {
-      state.repositories = repositories;
-      state.visibleCount = CONFIG.initialCards;
-      updateStatistics();
-      renderProjects();
-    }
-
-    function renderLoadError(error) {
-      const wrapper = document.createElement("div");
-      const content = document.createElement("div");
-      const title = document.createElement("strong");
-      const message = document.createElement("p");
-      const link = document.createElement("a");
-
-      wrapper.className =
-        "glass-panel col-span-full grid min-h-72 place-items-center rounded-3xl p-10 text-center";
-
-      title.className = "text-lg font-bold text-white";
-
-      title.textContent = "Projects could not be loaded.";
-
-      message.className =
-        "mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500";
-
-      message.textContent =
-        "The generated projects.json file is missing or invalid. Run the Update Portfolio Data workflow once.";
-
-      link.className = "secondary-button mt-6";
-      link.href =
-        `https://github.com/${CONFIG.username}?tab=repositories`;
-      link.target = "_blank";
-      link.rel = "noreferrer";
-      link.textContent = "View repositories on GitHub ↗";
-
-      content.append(title, message, link);
-      wrapper.append(content);
-      elements.projectsGrid.replaceChildren(wrapper);
-      elements.loadMoreContainer.hidden = true;
-    }
-
-    function resetAndRender() {
-      state.visibleCount = CONFIG.initialCards;
-      renderProjects();
-    }
-
-    function installEventListeners() {
-      elements.searchInput.addEventListener("input", () => {
-        state.query =
-          elements.searchInput.value.trim().toLowerCase();
-        resetAndRender();
-      });
-
-      elements.sortSelect.addEventListener("change", () => {
-        state.sort = elements.sortSelect.value;
-        resetAndRender();
-      });
-
-      elements.filterButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          state.filter = button.dataset.filter || "all";
-
-          elements.filterButtons.forEach((candidate) => {
-            candidate.setAttribute(
-              "aria-pressed",
-              String(candidate === button)
-            );
-          });
-
-          resetAndRender();
-        });
-      });
-
-      elements.loadMoreButton.addEventListener("click", () => {
-        state.visibleCount += CONFIG.cardsPerLoad;
-        renderProjects();
+      document.querySelectorAll(".reveal").forEach((element) => {
+        observer.observe(element);
       });
     }
-
-    async function initialize() {
-      installEventListeners();
-      loadPreviewCache();
-
-      try {
-        const payload = await fetchGeneratedProjects();
-        useRepositories(payload.repositories);
-
-        if (payload.generated_at) {
-          const generatedDate = new Date(payload.generated_at);
-
-          if (!Number.isNaN(generatedDate.getTime())) {
-            elements.refreshDate.textContent =
-              new Intl.DateTimeFormat("en", {
-                month: "short",
-                day: "numeric"
-              }).format(generatedDate);
-          }
-        }
-      } catch (error) {
-        renderLoadError(error);
-
-        console.error(
-          "Unable to load generated project data:",
-          error
-        );
-      }
-    }
-
-    initialize();
   </script>
 </body>
 </html>
