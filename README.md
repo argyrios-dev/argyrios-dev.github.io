@@ -1,36 +1,36 @@
-# argyrios-dev — Portafolio de proyectos
+# argyrios-dev — Project Portfolio
 
-Portafolio estático y manual para los proyectos públicos de
+Static and manual portfolio for the public projects of
 [`argyrios-dev`](https://github.com/argyrios-dev).
 
-La web presenta actualmente:
+The website currently features:
 
-- [BridgeLock](https://github.com/argyrios-dev/BridgeLock)
-- [AirControll](https://github.com/argyrios-dev/AirControll)
+* [BridgeLock](https://github.com/argyrios-dev/BridgeLock)
+* [AirControll](https://github.com/argyrios-dev/AirControll)
 
-## Por qué esta versión es manual
+## Why This Version Is Manual
 
-La web no consulta la API de GitHub y no necesita GitHub Actions.
+The website does not query the GitHub API and does not require GitHub Actions.
 
-Esto evita:
+This avoids:
 
-- Límites de la API.
-- Errores por peticiones anónimas.
-- Dependencias de JavaScript remoto.
-- Tarjetas incompletas por metadatos inesperados.
-- Cambios automáticos en la presentación.
+* API rate limits.
+* Errors caused by anonymous requests.
+* Remote JavaScript dependencies.
+* Incomplete cards caused by unexpected metadata.
+* Automatic changes to the presentation.
 
-Cada proyecto se añade de forma manual para controlar:
+Each project is added manually to control:
 
-- Miniatura.
-- Icono.
-- Descripción.
-- Etiquetas.
-- Enlace a la web.
-- Enlace al código.
-- Enlace a releases.
+* Thumbnail.
+* Icon.
+* Description.
+* Tags.
+* Website link.
+* Source code link.
+* Releases link.
 
-## Archivos
+## Files
 
 ```text
 argyrios-dev.github.io/
@@ -38,26 +38,26 @@ argyrios-dev.github.io/
 └── README.md
 ```
 
-No necesita CSS, JavaScript, Node.js ni dependencias adicionales. Los estilos y
-el pequeño script de animación están incluidos dentro de `index.html`.
+It does not require CSS, JavaScript, Node.js, or any additional dependencies. The
+styles and the small animation script are included inside `index.html`.
 
-## Publicar con GitHub Pages
+## Publish With GitHub Pages
 
-Crea o utiliza el repositorio:
+Create or use the repository:
 
 ```text
 argyrios-dev.github.io
 ```
 
-Coloca `index.html` y `README.md` en la raíz de la rama `main`.
+Place `index.html` and `README.md` in the root of the `main` branch.
 
-Después abre:
+Then open:
 
 ```text
 Settings → Pages
 ```
 
-Selecciona:
+Select:
 
 ```text
 Source: Deploy from a branch
@@ -65,13 +65,13 @@ Branch: main
 Folder: / (root)
 ```
 
-La web se publicará en:
+The website will be published at:
 
 ```text
 https://argyrios-dev.github.io/
 ```
 
-## Subir desde Terminal
+## Upload From Terminal
 
 ```zsh
 cd ~/Downloads
@@ -86,7 +86,7 @@ git remote add origin https://github.com/argyrios-dev/argyrios-dev.github.io.git
 git push -u origin main
 ```
 
-Cuando el repositorio ya está clonado:
+When the repository is already cloned:
 
 ```zsh
 cp ~/Downloads/argyrios-dev-proyectos-manual/index.html \
@@ -101,7 +101,7 @@ git commit -m "Use manual BridgeLock and AirControll portfolio"
 git push
 ```
 
-## Miniaturas utilizadas
+## Thumbnails Used
 
 BridgeLock:
 
@@ -115,17 +115,17 @@ AirControll:
 https://raw.githubusercontent.com/argyrios-dev/AirControll/main/IntroREADME.png
 ```
 
-Los iconos también se cargan directamente desde cada repositorio.
+The icons are also loaded directly from each repository.
 
-## Añadir otro proyecto manualmente
+## Add Another Project Manually
 
-En `index.html`, busca:
+In `index.html`, search for:
 
 ```html
 <div class="projects-grid">
 ```
 
-Copia uno de los bloques completos:
+Copy one of the complete blocks:
 
 ```html
 <article class="project-card reveal">
@@ -133,55 +133,55 @@ Copia uno de los bloques completos:
 </article>
 ```
 
-Después cambia:
+Then change:
 
-- Nombre del proyecto.
-- Descripción.
-- URL de la miniatura.
-- URL del icono.
-- Enlace de la web.
-- Enlace del repositorio.
-- Enlace de releases.
-- Etiquetas.
+* Project name.
+* Description.
+* Thumbnail URL.
+* Icon URL.
+* Website link.
+* Repository link.
+* Releases link.
+* Tags.
 
-Actualiza también este contador del hero:
+Also update this counter in the hero section:
 
 ```html
 <strong>2</strong>
 ```
 
-Por ejemplo, al añadir el tercer proyecto:
+For example, when adding the third project:
 
 ```html
 <strong>3</strong>
 ```
 
-## Dependencias
+## Dependencies
 
-Ninguna.
+None.
 
-La web utiliza exclusivamente:
+The website exclusively uses:
 
-- HTML.
-- CSS nativo.
-- JavaScript nativo.
-- Imágenes públicas alojadas en los repositorios.
+* HTML.
+* Native CSS.
+* Native JavaScript.
+* Public images hosted in the repositories.
 
-## Privacidad
+## Privacy
 
-La web no contiene:
+The website does not contain:
 
-- Analytics.
-- Cookies.
-- API de GitHub.
-- Tokens.
-- Seguimiento.
-- Formularios.
-- Peticiones a servicios de terceros, salvo las imágenes públicas de GitHub.
+* Analytics.
+* Cookies.
+* GitHub API.
+* Tokens.
+* Tracking.
+* Forms.
+* Requests to third-party services, except for public GitHub images.
 
-## Personalización
+## Customization
 
-Los colores principales se encuentran al principio de `index.html`:
+The main colors are located at the beginning of `index.html`:
 
 ```css
 :root {
@@ -192,8 +192,8 @@ Los colores principales se encuentran al principio de `index.html`:
 }
 ```
 
-El favicon actual utiliza la imagen de perfil de `argyrios-dev`. Puede cambiarse
-modificando:
+The current favicon uses the `argyrios-dev` profile image. It can be changed by
+modifying:
 
 ```html
 <link
