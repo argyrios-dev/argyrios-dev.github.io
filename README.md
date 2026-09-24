@@ -15,3 +15,7 @@ python3 -m http.server 8000
 Then open `http://localhost:8000/`.
 
 The site is hosted from the root of this repository on GitHub Pages.
+
+## Live projects menu
+
+The **Projects** button opens an accessible search drawer populated from GitHub's public repository API. It lists repositories owned by `argyrios-dev`, excluding the profile README repository, this site repository, and forks. New public repositories appear on the next check, at most five minutes after a successful cached fetch; the refresh button checks immediately. The menu supports pagination up to 500 repositories, search, keyboard focus trapping and Escape to close. If the API is unavailable, it shows the most recent saved list and a direct link to all repositories on GitHub. Private repositories are never included. No token or backend is needed.
