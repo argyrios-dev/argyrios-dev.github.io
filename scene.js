@@ -135,7 +135,7 @@
       ctx.fillStyle=`rgba(92,178,255,${alpha})`;
       ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.closePath();ctx.fill();
     }
-    for(const [a,b] of edges){const p=projected[a],q=projected[b],alpha=clamp(.28-(p.z+q.z)*.075,.045,.62);line(p,q,`rgba(151,215,255,${alpha})`,.65);}
+    for(const [a,b] of edges){const p=projected[a],q=projected[b],alpha=clamp(.28-(p.z+q.z)*.075,.045,.62);line(p,q,`rgba(151,215,255,${alpha})`,.9);}
     for(let i=0;i<projected.length;i+=3){const p=projected[i],radius=i%11===0?2.9:1.2;ctx.fillStyle=i%11===0?'#d9f4ff':`rgba(158,217,255,${clamp(.8-p.z*.13,.2,.94)})`;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill();}
     orbit(cx,cy,scale,rotation*.6+.35,.52,1.7,1.22,'#a9e1ff66');
     orbit(cx,cy,scale,-rotation*.47-1.1,-.62,1.95,1.5,'#8ac6ff42');
