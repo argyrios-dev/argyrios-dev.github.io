@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const owner = 'argyrios-dev';
-  const cacheKey = 'argyrios-public-projects-v1';
+  const cacheKey = 'argyrios-public-projects-v2';
   const cacheMs = 5 * 60 * 1000;
   const trigger = document.getElementById('projects-trigger');
   const overlay = document.getElementById('projects-menu');
@@ -27,9 +27,16 @@
   function saveCache(items) {
     try { localStorage.setItem(cacheKey, JSON.stringify({time:Date.now(),items})); } catch { /* A live request still works. */ }
   }
+  function websiteUrl(value) {
+    if (typeof value !== 'string' || !value.trim()) return '';
+    try {
+      const url = new URL(value.trim());
+      return ['https:', 'http:'].includes(url.protocol) && url.hostname ? url.href : '';
+    } catch { return ''; }
+  }
   function normalize(items) {
     return items.filter(repo => repo && !repo.fork && !excluded.has(String(repo.name).toLowerCase()) && String(repo.owner?.login).toLowerCase() === owner)
-      .map(repo => ({name:String(repo.name),description:typeof repo.description === 'string' ? repo.description : '',language:typeof repo.language === 'string' ? repo.language : '',created_at:repo.created_at || ''}))
+      .map(repo => ({name:String(repo.name),description:typeof repo.description === 'string' ? repo.description : '',language:typeof repo.language === 'string' ? repo.language : '',website:websiteUrl(repo.homepage),created_at:repo.created_at || ''}))
       .sort((a,b) => b.created_at.localeCompare(a.created_at));
   }
   function render() {
@@ -46,19 +53,31 @@
     }
     const fragment = document.createDocumentFragment();
     matched.forEach((repo,index) => {
-      const link = document.createElement('a');
-      link.className = 'repo';
-      link.href = `https://github.com/${owner}/${encodeURIComponent(repo.name)}`;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
+      const row = document.createElement('article');
+      row.className = 'repo';
       const number = document.createElement('span');
       number.className = 'repo-number'; number.textContent = String(index+1).padStart(2,'0');
       const body = document.createElement('div');
       const title = document.createElement('h3'); title.textContent = repo.name;
       const description = document.createElement('p'); description.textContent = repo.description || 'View the source on GitHub.';
       const language = document.createElement('span'); language.className = 'repo-language'; language.textContent = repo.language || 'PUBLIC REPOSITORY';
-      const arrow = document.createElement('span'); arrow.className = 'repo-arrow'; arrow.setAttribute('aria-hidden','true'); arrow.textContent = '↗';
-      body.append(title,description,language); link.append(number,body,arrow); fragment.append(link);
+      const actions = document.createElement('div'); actions.className = 'repo-actions';
+      if (repo.website) {
+        const website = document.createElement('a');
+        website.className = 'repo-website'; website.href = repo.website;
+        website.target = '_blank'; website.rel = 'noopener noreferrer';
+        website.textContent = 'OPEN WEBSITE ↗';
+        website.setAttribute('aria-label', `Open ${repo.name} website`);
+        actions.append(website);
+      }
+      const source = document.createElement('a');
+      source.className = 'repo-source';
+      source.href = `https://github.com/${owner}/${encodeURIComponent(repo.name)}`;
+      source.target = '_blank'; source.rel = 'noopener noreferrer';
+      source.textContent = 'VIEW CODE ↗';
+      source.setAttribute('aria-label', `View ${repo.name} on GitHub`);
+      actions.append(source);
+      body.append(title,description,language,actions); row.append(number,body); fragment.append(row);
     });
     list.append(fragment);
   }
