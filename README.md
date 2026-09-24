@@ -1,23 +1,23 @@
 # Argyrios — Interactive portfolio
 
-The [live portfolio](https://argyrios-dev.github.io/) is an English-language résumé for Argyrios Gogonas Serrano. It presents selected open-source software and a verified HarvardX course certificate.
+The [live site](https://argyrios-dev.github.io/) is an English-language introduction to Argyrios Gogonas Serrano. It uses a five-chapter narrative instead of a project gallery, with a verified HarvardX course certificate and a link to the public GitHub profile.
 
-The background is a perspective-projected 3D network that rotates as the page scrolls. It uses Canvas 2D and native JavaScript, with no third-party runtime dependencies, build step, analytics or GitHub API requests. Scroll updates are scheduled with `requestAnimationFrame`; canvas resolution is capped at 2× device pixel ratio. Reduced-motion preferences stop the rotation and reveal content immediately.
+## Visual system
+
+The scroll-controlled scene is a 3D icosphere subdivided into 320 faces, rendered with perspective projection and depth-sorted facets. It changes shape across chapters, with orbit paths, particles, pointer parallax and a scroll-position light. The animation uses the Canvas 2D API and no external JavaScript, assets, fonts or build tools. It caps render resolution at 2× device pixel ratio and frame rate at roughly 30 FPS, pauses in hidden tabs and offers a static scene for reduced-motion preferences.
 
 ## Run locally
-
-Open `index.html` in a browser, or serve the repository root:
 
 ```sh
 python3 -m http.server 8000
 ```
 
-Then visit `http://localhost:8000/`.
+Then open `http://localhost:8000/`.
 
-## Publish
+## Files
 
-This repository is the GitHub Pages user site for [`argyrios-dev`](https://github.com/argyrios-dev). Pages can deploy the root of `main` at `https://argyrios-dev.github.io/`.
+- `index.html` — semantic content and links
+- `styles.css` — layout, typography and responsive presentation
+- `scene.js` — scroll interaction and 3D rendering
 
-## Update content
-
-Project links and descriptions are maintained directly in `index.html`. Credential verification links point to the edX certificate page. Contact links point to the public GitHub profile.
+GitHub Pages publishes the repository root from `main` at `https://argyrios-dev.github.io/`.
