@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b14">
+  <title>LINUX NEXUS — Cybernetic Desktop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"><link rel="icon" href="data:,">
+</head>
+<body>
+  <div class="wallpaper"></div><div class="scanlines"></div>
+  <header class="topbar">
+    <button class="brand" id="launcherBtn"><span class="brand-mark">N</span><span>NEXUS<span class="brand-dim"> // OS</span></span></button>
+    <div class="top-center"><span class="live-dot"></span><span>NEURAL DESKTOP</span><span class="top-sep">/</span><span>WORKSPACE 01</span></div>
+    <div class="system-tray"><button class="tray-btn" id="wifiBtn">⌁ <span>ONLINE</span></button><button class="tray-btn" id="soundBtn">◖</button><button class="tray-btn" id="batteryBtn">▰ <span>98%</span></button><button class="clock" id="clockBtn"><span id="clock">09:41</span><small id="date">01 NOV 2026</small></button></div>
+  </header>
+  <main class="desktop" id="desktop">
+    <section class="desktop-widgets"><div class="hero-widget"><div class="eyebrow"><span class="live-dot"></span> SYSTEM STATUS // NOMINAL</div><div class="hero-time" id="heroTime">09:41<span>:</span>00</div><div class="hero-date" id="heroDate">SUNDAY, 01 NOVEMBER</div><div class="widget-line"></div><div class="metric-row"><span>CORE TEMPERATURE</span><b>38.4°C</b></div><div class="metric-row"><span>NETWORK LATENCY</span><b>12 MS</b></div><div class="metric-row"><span>SECURITY STATUS</span><b class="cyan">ENCRYPTED</b></div></div><div class="quote-widget"><span class="quote-mark">“</span><p>The future is not installed.<br><b>It is engineered.</b></p><small>NEXUS SYSTEMS / 001</small></div></section>
+    <div class="desktop-icons"><button class="desktop-icon" data-app="files"><span class="app-glyph cyan-bg">▤</span><span>File System</span></button><button class="desktop-icon" data-app="browser"><span class="app-glyph violet-bg">◎</span><span>Web Browser</span></button><button class="desktop-icon" data-app="terminal"><span class="app-glyph green-bg">$_</span><span>Terminal</span></button><button class="desktop-icon" data-app="monitor"><span class="app-glyph pink-bg">▥</span><span>System Monitor</span></button></div>
+    <div id="windows"></div>
+    <div class="launcher-panel hidden" id="launcherPanel"><div class="launcher-head"><div><span class="eyebrow">NEXUS APPLICATION GRID</span><h2>What are we <em>building?</em></h2></div><button class="icon-button" id="closeLauncher">×</button></div><div class="launcher-search"><span>⌕</span><input id="appSearch" placeholder="Search applications..." autocomplete="off"></div><div class="launcher-grid" id="launcherGrid"></div><div class="launcher-foot"><span>SESSION: LOCAL-01</span><button id="powerBtn">⏻ &nbsp; POWER OPTIONS</button></div></div>
+    <div class="quick-panel hidden" id="quickPanel"><div class="panel-title">CONTROL CENTER <button class="icon-button" id="closeQuick">×</button></div><div class="quick-grid"><button class="quick-tile active" data-toggle="network"><b>⌁</b><span>Network</span><small>Connected</small></button><button class="quick-tile active" data-toggle="bluetooth"><b>ᛒ</b><span>Bluetooth</span><small>Enabled</small></button><button class="quick-tile" data-toggle="focus"><b>◉</b><span>Focus mode</span><small>Disabled</small></button><button class="quick-tile active" data-toggle="night"><b>☾</b><span>Night light</span><small>Enabled</small></button></div><div class="brightness"><label>DISPLAY INTENSITY</label><input type="range" min="20" max="100" value="86"></div><div class="quick-bottom"><span>POWER</span><b>98% — 6h 42m remaining</b></div></div>
+  </main>
+  <nav class="dock-wrap"><div class="dock" id="dock"><button class="dock-app launcher-dock" id="dockLauncher" title="Applications"><span class="nexus-logo">N</span></button><i class="dock-divider"></i><button class="dock-app" data-app="browser" title="Browser"><span class="dock-glyph browser-glyph">◎</span></button><button class="dock-app" data-app="files" title="Files"><span class="dock-glyph files-glyph">▤</span></button><button class="dock-app" data-app="terminal" title="Terminal"><span class="dock-glyph terminal-glyph">$_</span></button><button class="dock-app" data-app="editor" title="Text editor"><span class="dock-glyph editor-glyph">✎</span></button><button class="dock-app" data-app="monitor" title="System monitor"><span class="dock-glyph monitor-glyph">▥</span></button><button class="dock-app" data-app="settings" title="Settings"><span class="dock-glyph settings-glyph">⚙</span></button><i class="dock-divider"></i><button class="dock-app" id="showDesktop" title="Show desktop"><span class="dock-glyph desktop-glyph">▣</span></button></div></nav>
+  <div class="toast-stack" id="toastStack"></div><script src="app.js"></script>
+</body></html>
